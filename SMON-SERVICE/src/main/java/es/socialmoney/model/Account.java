@@ -1,65 +1,53 @@
 package es.socialmoney.model;
+
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name="accounts")
+@Table(name = "accounts")
 public class Account implements Serializable {
-	
+
 	private static final long serialVersionUID = 1L;
-	
+
 	@Id
-	@Column(nullable=false, length=24)
+	@Column(nullable = false, length = 24)
 	private String username;
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private String password;
-	@Column(nullable=false, length=56)
+	@Column(nullable = false, length = 56)
 	private String name;
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private int age;
-	@Column(columnDefinition="boolean default false")
+	@Column(columnDefinition = "boolean default false")
 	private boolean isadmin;
 	private String description;
 	private String link;
-	@Column(columnDefinition="boolean default false")
+	@Column(columnDefinition = "boolean default false")
 	private boolean showprofits;
 	@Lob
 	private byte[] picture;
-	
-	@OneToMany(cascade=CascadeType.ALL, mappedBy="author")
-	private List<Post> posts;
-	
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="follows",
-	 joinColumns=@JoinColumn(name="follower"),
-	 inverseJoinColumns=@JoinColumn(name="followed")
-	)
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
+	private List<Integer> posts;
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "follows", joinColumns = @JoinColumn(name = "follower"), inverseJoinColumns = @JoinColumn(name = "followed"))
 	private List<String> following;
 
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="follows",
-	 joinColumns=@JoinColumn(name="followed"),
-	 inverseJoinColumns=@JoinColumn(name="follower")
-	)
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "follows", joinColumns = @JoinColumn(name = "followed"), inverseJoinColumns = @JoinColumn(name = "follower"))
 	private List<String> followers;
-	
-	
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="superfollows",
-	 joinColumns=@JoinColumn(name="superfollower"),
-	 inverseJoinColumns=@JoinColumn(name="superfollowed")
-	)
+
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollower"), inverseJoinColumns = @JoinColumn(name = "superfollowed"))
 	private List<String> superfollowing;
 
-	@ManyToMany(cascade=CascadeType.ALL)
-	@JoinTable(name="superfollows",
-	 joinColumns=@JoinColumn(name="superfollowed"),
-	 inverseJoinColumns=@JoinColumn(name="superfollower")
-	)
+	@ManyToMany(cascade = CascadeType.ALL)
+	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollowed"), inverseJoinColumns = @JoinColumn(name = "superfollower"))
 	private List<String> superfollowers;
-	
+
 	public Account() {
 		super();
 	}
@@ -136,11 +124,11 @@ public class Account implements Serializable {
 		this.picture = picture;
 	}
 
-	public List<Post> getPosts() {
+	public List<Integer> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(List<Post> posts) {
+	public void setPosts(List<Integer> posts) {
 		this.posts = posts;
 	}
 
@@ -280,6 +268,4 @@ public class Account implements Serializable {
 				+ superfollowers + "]";
 	}
 
-	
-	
 }

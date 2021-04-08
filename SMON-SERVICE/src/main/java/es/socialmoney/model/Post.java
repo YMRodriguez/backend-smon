@@ -1,4 +1,5 @@
 package es.socialmoney.model;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Arrays;
@@ -6,87 +7,106 @@ import java.util.List;
 import javax.persistence.*;
 
 @Entity
-@Table(name="posts")
+@Table(name = "posts")
 public class Post implements Serializable {
+
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(nullable = false)
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	@Column(nullable=false, length=56)
+	@Column(nullable = false, length = 56)
 	private String title;
 	private String author;
 	private String content;
-	@Column(nullable=false)
+	@Column(nullable = false)
 	private LocalDate date;
-	@Column(columnDefinition="boolean default false")
+	@Column(columnDefinition = "boolean default false")
 	private boolean isexclusive;
-	@Column(columnDefinition="boolean default true")
+	@Column(columnDefinition = "boolean default true")
 	private boolean isfundan;
-	@Column(columnDefinition="boolean default false")
+	@Column(columnDefinition = "boolean default false")
 	private boolean isopinion;
-	@Column(columnDefinition="boolean default false")
+	@Column(columnDefinition = "boolean default false")
 	private boolean istecan;
-	
-	
-	
+
 	public Post() {
 		super();
 	}
+
 	public int getId() {
 		return id;
 	}
+
 	public void setId(int id) {
 		this.id = id;
 	}
+
 	public String getTitle() {
 		return title;
 	}
+
 	public void setTitle(String title) {
 		this.title = title;
 	}
+
 	public String getAuthor() {
 		return author;
 	}
+
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+
 	public String getContent() {
 		return content;
 	}
+
 	public void setContent(String content) {
 		this.content = content;
 	}
+
 	public LocalDate getDate() {
 		return date;
 	}
+
 	public void setDate(LocalDate date) {
 		this.date = date;
 	}
+
 	public boolean isIsexclusive() {
 		return isexclusive;
 	}
+
 	public void setIsexclusive(boolean isexclusive) {
 		this.isexclusive = isexclusive;
 	}
+
 	public boolean isIsfundan() {
 		return isfundan;
 	}
+
 	public void setIsfundan(boolean isfundan) {
 		this.isfundan = isfundan;
 	}
+
 	public boolean isIsopinion() {
 		return isopinion;
 	}
+
 	public void setIsopinion(boolean isopinion) {
 		this.isopinion = isopinion;
 	}
+
 	public boolean isIstecan() {
 		return istecan;
 	}
+
 	public void setIstecan(boolean istecan) {
 		this.istecan = istecan;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -102,6 +122,7 @@ public class Post implements Serializable {
 		result = prime * result + ((title == null) ? 0 : title.hashCode());
 		return result;
 	}
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
@@ -143,13 +164,12 @@ public class Post implements Serializable {
 			return false;
 		return true;
 	}
+
 	@Override
 	public String toString() {
 		return "Post [id=" + id + ", title=" + title + ", author=" + author + ", content=" + content + ", date=" + date
 				+ ", isexclusive=" + isexclusive + ", isfundan=" + isfundan + ", isopinion=" + isopinion + ", istecan="
 				+ istecan + "]";
 	}
-	
-	
 
 }
