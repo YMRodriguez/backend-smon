@@ -22,7 +22,9 @@ public class PostDAOImplementation implements PostDAO {
 	public Post create(Post post) {
 		Session session = SessionFactoryService.get().openSession();
 		session.beginTransaction();
+		
 		session.save(post);
+		
 		session.getTransaction().commit();
 		session.close();
 		return post;
