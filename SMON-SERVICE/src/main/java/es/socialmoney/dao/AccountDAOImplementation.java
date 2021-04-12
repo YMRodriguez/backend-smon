@@ -61,7 +61,7 @@ public class AccountDAOImplementation implements AccountDAO {
 		session.close();
 		return account;
 	}
-
+	
 	@Override
 	public List<Account> readAll() {
 		List<Account> accounts = new ArrayList<Account>();

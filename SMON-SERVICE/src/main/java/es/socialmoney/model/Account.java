@@ -52,6 +52,18 @@ public class Account implements Serializable {
 		super();
 	}
 
+
+
+	public Account(String username, String password, String name, int age) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.age = age;
+	}
+
+
+
 	public String getUsername() {
 		return username;
 	}
