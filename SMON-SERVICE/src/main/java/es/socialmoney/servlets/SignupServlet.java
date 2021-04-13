@@ -41,6 +41,7 @@ public class SignupServlet extends HttpServlet {
             PrintWriter out = resp.getWriter();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
+            resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
             if(account != null) {
                 ObjectMapper mapper = new ObjectMapper();
                 String json = mapper.writeValueAsString(account);
