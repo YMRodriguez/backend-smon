@@ -18,7 +18,10 @@ public class Post implements Serializable {
 	private int id;
 	@Column(nullable = false, length = 56)
 	private String title;
-	private String author;
+	
+	@ManyToOne
+	private Account author;
+	
 	private String content;
 	@Column(nullable = false)
 	private LocalDate date;
@@ -51,11 +54,11 @@ public class Post implements Serializable {
 		this.title = title;
 	}
 
-	public String getAuthor() {
+	public Account getAuthor() {
 		return author;
 	}
 
-	public void setAuthor(String author) {
+	public void setAuthor(Account author) {
 		this.author = author;
 	}
 
