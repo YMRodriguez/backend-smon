@@ -27,16 +27,15 @@ public class LoginServlet extends HttpServlet {
         StringBuilder buffer = new StringBuilder();
         BufferedReader reader = req.getReader();
         String line;
+        resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         while ((line = reader.readLine()) != null) {
             buffer.append(line);
         }
         String data = buffer.toString();
         JsonReader jsonReader = Json.createReader(new StringReader(data));
         JsonObject jsonObject = jsonReader.readObject();
-        System.out.println(jsonObject.getString("username"));
         Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
         
-        PrintWriter out = resp.getWriter();
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
         if(account!=null && jsonObject.getString("password").equals(account.getPassword())) {
@@ -46,16 +45,16 @@ public class LoginServlet extends HttpServlet {
                         .add("code",200)
                         .add("account",json)
                         .build();
-            out.print(jsonObject.toString());
-            req.getSession().setAttribute("loggedin",true);
-            req.getSession().setAttribute("account", account);
+            resp.setContentType("application/json");
+            resp.setCharacterEncoding("UTF-8");	
+            resp.getWriter().write(jsonObject.toString());
+            //req.getSession().setAttribute("loggedin",true);
+            //req.getSession().setAttribute("account", account);
         }else{
             jsonObject = Json.createObjectBuilder()
                     .add("code",404)
                     .build();
-            out.print(jsonObject.toString());
         }
-        out.flush();
     }
 
 

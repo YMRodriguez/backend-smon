@@ -35,31 +35,29 @@ public class SignupServlet extends HttpServlet {
         String data = buffer.toString();
         JsonReader jsonReader = Json.createReader(new StringReader(data));
         JsonObject jsonObject = jsonReader.readObject();
+        resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         if(AccountDAOImplementation.getInstance().read(jsonObject.getString("username"))== null) {
             Account a = new Account(jsonObject.getString("username"), jsonObject.getString("password"), jsonObject.getString("name"), Integer.parseInt(jsonObject.getString("age")));
             Account account = AccountDAOImplementation.getInstance().create(a);
-            PrintWriter out = resp.getWriter();
-            resp.setContentType("application/json");
-            resp.setCharacterEncoding("UTF-8");
-            resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
             if(account != null) {
+            	System.out.println("1");
                 ObjectMapper mapper = new ObjectMapper();
                 String json = mapper.writeValueAsString(account);
-                System.out.println(json);
-                jsonObject = Json.createObjectBuilder()
-                            .add("code",200)
-                            .build();
-                out.print(jsonObject.toString());	
+                resp.setContentType("application/json");
+                resp.setCharacterEncoding("UTF-8");
+                resp.getWriter().write(json);	
 	        }else{
-	        	System.out.println("v");
-	        	System.out.println("a");
-	            jsonObject = Json.createObjectBuilder()
-	                    .add("code",404)
-	                    .build();
-	            out.print(jsonObject.toString());
-	        }
-        out.flush();
-    }
+	        	System.out.println("2");
+                resp.setContentType("text");
+                resp.setCharacterEncoding("UTF-8");	
+	        	resp.getWriter().write("fail");
 
+	        }
+    }else {
+    	System.out.println("3");
+        resp.setContentType("text");
+        resp.setCharacterEncoding("UTF-8");	
+    	resp.getWriter().write("user exists");
     }
+}
 }
