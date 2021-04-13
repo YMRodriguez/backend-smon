@@ -14,5 +14,6 @@
                 <property name="show_sql">true</property>
                 <property name="hbm2ddl.auto">update</property>
                 <mapping class="es.upm.dit.isst.tfg.model.TFG" />
+                <mapping class="es.socialmoney.model.Account" />
         </session-factory>
 </hibernate-configuration>

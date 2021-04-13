@@ -30,27 +30,40 @@ public class Account implements Serializable {
 	private byte[] picture;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
-	private List<Integer> posts;
+	private List<Post> posts;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "follows", joinColumns = @JoinColumn(name = "follower"), inverseJoinColumns = @JoinColumn(name = "followed"))
-	private List<String> following;
+	private List<Account> following;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany( cascade = CascadeType.ALL)
 	@JoinTable(name = "follows", joinColumns = @JoinColumn(name = "followed"), inverseJoinColumns = @JoinColumn(name = "follower"))
-	private List<String> followers;
+	private List<Account> followers;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollower"), inverseJoinColumns = @JoinColumn(name = "superfollowed"))
-	private List<String> superfollowing;
+	private List<Account> superfollowing;
 
 	@ManyToMany(cascade = CascadeType.ALL)
 	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollowed"), inverseJoinColumns = @JoinColumn(name = "superfollower"))
-	private List<String> superfollowers;
+	private List<Account> superfollowers;
+
 
 	public Account() {
 		super();
 	}
+
+
+
+	public Account(String username, String password, String name, int age) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.age = age;
+	}
+
+
 
 	public String getUsername() {
 		return username;
@@ -124,43 +137,43 @@ public class Account implements Serializable {
 		this.picture = picture;
 	}
 
-	public List<Integer> getPosts() {
+	public List<Post> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(List<Integer> posts) {
+	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}
 
-	public List<String> getFollowing() {
+	public List<Account> getFollowing() {
 		return following;
 	}
 
-	public void setFollowing(List<String> following) {
+	public void setFollowing(List<Account> following) {
 		this.following = following;
 	}
 
-	public List<String> getFollowers() {
+	public List<Account> getFollowers() {
 		return followers;
 	}
 
-	public void setFollowers(List<String> followers) {
+	public void setFollowers(List<Account> followers) {
 		this.followers = followers;
 	}
 
-	public List<String> getSuperfollowing() {
+	public List<Account> getSuperfollowing() {
 		return superfollowing;
 	}
 
-	public void setSuperfollowing(List<String> superfollowing) {
+	public void setSuperfollowing(List<Account> superfollowing) {
 		this.superfollowing = superfollowing;
 	}
 
-	public List<String> getSuperfollowers() {
+	public List<Account> getSuperfollowers() {
 		return superfollowers;
 	}
 
-	public void setSuperfollowers(List<String> superfollowers) {
+	public void setSuperfollowers(List<Account> superfollowers) {
 		this.superfollowers = superfollowers;
 	}
 
@@ -183,8 +196,8 @@ public class Account implements Serializable {
 		result = prime * result + Arrays.hashCode(picture);
 		result = prime * result + ((posts == null) ? 0 : posts.hashCode());
 		result = prime * result + (showprofits ? 1231 : 1237);
-		result = prime * result + ((superfollowers == null) ? 0 : superfollowers.hashCode());
-		result = prime * result + ((superfollowing == null) ? 0 : superfollowing.hashCode());
+		//result = prime * result + ((superfollowers == null) ? 0 : superfollowers.hashCode());
+		//result = prime * result + ((superfollowing == null) ? 0 : superfollowing.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
