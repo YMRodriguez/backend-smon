@@ -43,21 +43,31 @@ public class SignupServlet extends HttpServlet {
             	System.out.println("1");
                 ObjectMapper mapper = new ObjectMapper();
                 String json = mapper.writeValueAsString(account);
+                jsonObject = Json.createObjectBuilder()
+                            .add("code",200)
+                            .add("account",json)
+                            .build();
                 resp.setContentType("application/json");
-                resp.setCharacterEncoding("UTF-8");
-                resp.getWriter().write(json);	
-	        }else{
-	        	System.out.println("2");
-                resp.setContentType("text");
                 resp.setCharacterEncoding("UTF-8");	
-	        	resp.getWriter().write("fail");
+                resp.getWriter().write(jsonObject.toString());
+	        }else{
+                jsonObject = Json.createObjectBuilder()
+                        .add("code",400)
+                        .add("mensaje","parametros invalidos")
+                        .build();
+                		resp.setContentType("application/json");
+                		resp.setCharacterEncoding("UTF-8");	
+                		resp.getWriter().write(jsonObject.toString());
 
 	        }
     }else {
-    	System.out.println("3");
-        resp.setContentType("text");
+        jsonObject = Json.createObjectBuilder()
+                .add("code",202)
+                .add("mensaje","Usuario ya existente")
+                .build();
+        resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");	
-    	resp.getWriter().write("user exists");
+        resp.getWriter().write(jsonObject.toString());
     }
 }
 }
