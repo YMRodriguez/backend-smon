@@ -5,6 +5,9 @@ import org.hibernate.SessionFactory;
 
 import org.hibernate.cfg.Configuration;
 
+import es.socialmoney.model.Account;
+import es.socialmoney.model.Post;
+
  
 public class SessionFactoryService {
 
@@ -15,9 +18,11 @@ public class SessionFactoryService {
 
 
  private SessionFactoryService() {
-
-    sessionFactory = new Configuration().configure().buildSessionFactory();
-
+	 Configuration configuration = new Configuration().configure();
+     configuration.addAnnotatedClass(Account.class);
+     configuration.addAnnotatedClass(Post.class);
+     sessionFactory = configuration.buildSessionFactory();
+    
   }
  public static SessionFactory get() {
 

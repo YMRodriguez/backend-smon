@@ -22,7 +22,6 @@ import java.io.StringReader;
 public class LoginServlet extends HttpServlet {
 	
 	private static final long serialVersionUID = 1L;
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         StringBuilder buffer = new StringBuilder();
@@ -34,6 +33,7 @@ public class LoginServlet extends HttpServlet {
         String data = buffer.toString();
         JsonReader jsonReader = Json.createReader(new StringReader(data));
         JsonObject jsonObject = jsonReader.readObject();
+        System.out.println(jsonObject.getString("username"));
         Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
         
         PrintWriter out = resp.getWriter();

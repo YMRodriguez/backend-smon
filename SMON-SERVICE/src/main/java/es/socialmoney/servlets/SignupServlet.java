@@ -41,20 +41,22 @@ public class SignupServlet extends HttpServlet {
             PrintWriter out = resp.getWriter();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");
-            if(AccountDAOImplementation.getInstance().read(jsonObject.getString("username"))!= null) {
+            if(account != null) {
                 ObjectMapper mapper = new ObjectMapper();
                 String json = mapper.writeValueAsString(account);
+                System.out.println(json);
                 jsonObject = Json.createObjectBuilder()
                             .add("code",200)
-                            .add("account",json)
                             .build();
                 out.print(jsonObject.toString());	
-        }else{
-            jsonObject = Json.createObjectBuilder()
-                    .add("code",404)
-                    .build();
-            out.print(jsonObject.toString());
-        }
+	        }else{
+	        	System.out.println("v");
+	        	System.out.println("a");
+	            jsonObject = Json.createObjectBuilder()
+	                    .add("code",404)
+	                    .build();
+	            out.print(jsonObject.toString());
+	        }
         out.flush();
     }
 
