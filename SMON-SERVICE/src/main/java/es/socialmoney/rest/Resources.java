@@ -1,5 +1,6 @@
-package es.socialmoney.rest;
+/*package es.socialmoney.rest;
 
 public class Resources {
 
 }
+*/

@@ -241,6 +241,15 @@ xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xs
                   <scope>test</scope>
 
          </dependency>  
+                  <dependency>
+
+                  <groupId>org.glassfish.jaxb</groupId>
+
+                  <artifactId>jaxb-runtime</artifactId>
+
+                  <version>2.3.0</version>
+
+         </dependency>  
 
   </dependencies>
 
