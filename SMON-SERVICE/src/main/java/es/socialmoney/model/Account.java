@@ -32,7 +32,7 @@ public class Account implements Serializable {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "author")
 	private List<Post> posts;
 
-	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "follows", joinColumns = @JoinColumn(name = "follower"), inverseJoinColumns = @JoinColumn(name = "followed"))
 	private List<Account> following;
 
@@ -40,11 +40,12 @@ public class Account implements Serializable {
 	@JoinTable(name = "follows", joinColumns = @JoinColumn(name = "followed"), inverseJoinColumns = @JoinColumn(name = "follower"))
 	private List<Account> followers;
 
-	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollower"), inverseJoinColumns = @JoinColumn(name = "superfollowed"))
 	private List<Account> superfollowing;
 
-	@ManyToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollowed"), inverseJoinColumns = @JoinColumn(name = "superfollower"))
 	private List<Account> superfollowers;
 
@@ -196,8 +197,8 @@ public class Account implements Serializable {
 		result = prime * result + Arrays.hashCode(picture);
 		result = prime * result + ((posts == null) ? 0 : posts.hashCode());
 		result = prime * result + (showprofits ? 1231 : 1237);
-		//result = prime * result + ((superfollowers == null) ? 0 : superfollowers.hashCode());
-		//result = prime * result + ((superfollowing == null) ? 0 : superfollowing.hashCode());
+		result = prime * result + ((superfollowers == null) ? 0 : superfollowers.hashCode());
+		result = prime * result + ((superfollowing == null) ? 0 : superfollowing.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
