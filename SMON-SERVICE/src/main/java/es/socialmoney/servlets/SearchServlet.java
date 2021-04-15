@@ -41,7 +41,7 @@ public class SearchServlet extends HttpServlet{
         JsonReader jsonReader = Json.createReader(new StringReader(data));
         JsonObject jsonObject = jsonReader.readObject();
         
-		String username = req.getParameter(jsonObject.getString("username"));
+		String username = jsonObject.getString("username");
 		Account account = AccountDAOImplementation.getInstance().read(username);
 		
 		if (account != null) {

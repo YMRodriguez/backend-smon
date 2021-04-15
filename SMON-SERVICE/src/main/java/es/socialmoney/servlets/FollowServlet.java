@@ -44,8 +44,8 @@ public class FollowServlet extends HttpServlet{
         JsonReader jsonReader = Json.createReader(new StringReader(data));
         JsonObject jsonObject = jsonReader.readObject();
         
-		String username = req.getParameter(jsonObject.getString("username"));
-		String followed = req.getParameter(jsonObject.getString("followed"));
+		String username = jsonObject.getString("username");
+		String followed = jsonObject.getString("followed");
 		Account userAccount = AccountDAOImplementation.getInstance().read(username);
 		Account followedAccount = AccountDAOImplementation.getInstance().read(followed);
 		
