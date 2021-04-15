@@ -3,6 +3,7 @@ package es.socialmoney.model;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.persistence.*;
 
 import com.google.gson.annotations.Expose;
@@ -51,7 +52,6 @@ public class Account implements Serializable {
 	@JoinTable(name = "follows", joinColumns = @JoinColumn(name = "followed"), inverseJoinColumns = @JoinColumn(name = "follower"))
 	private List<Account> followers;
 
-
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollower"), inverseJoinColumns = @JoinColumn(name = "superfollowed"))
 	private List<Account> superfollowing;
@@ -60,12 +60,9 @@ public class Account implements Serializable {
 	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollowed"), inverseJoinColumns = @JoinColumn(name = "superfollower"))
 	private List<Account> superfollowers;
 
-
 	public Account() {
 		super();
 	}
-
-
 
 	public Account(String username, String password, String name, int age) {
 		super();
@@ -74,8 +71,6 @@ public class Account implements Serializable {
 		this.name = name;
 		this.age = age;
 	}
-
-
 
 	public String getUsername() {
 		return username;

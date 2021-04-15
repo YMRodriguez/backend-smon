@@ -32,24 +32,19 @@ public class EditAccountServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-		// String data = buffer.toString();
 		JsonReader jsonReader = Json.createReader(new StringReader(getValue(req.getPart("data"))));
 		JsonObject jsonObject = jsonReader.readObject();
-		System.out.println(jsonObject);
 
 		InputStream filecontent = req.getPart("picture").getInputStream();
 		byte[] fileAsByteArray = IOUtils.toByteArray(filecontent);
-		
+
 		String description = jsonObject.getString("description");
-		System.out.println(description);
 
 		String password = jsonObject.getString("password");
 
 		boolean profits = jsonObject.getBoolean("showprofits");
-		
 
 		Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
-		System.out.println(account);
 		account.setShowprofits(profits);
 
 		if (password != null) {
@@ -62,21 +57,17 @@ public class EditAccountServlet extends HttpServlet {
 		if (fileAsByteArray.length != 0) {
 			account.setPicture(fileAsByteArray);
 		}
-		
-		AccountDAOImplementation.getInstance().update(account);
 
+		AccountDAOImplementation.getInstance().update(account);
 
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
 		ObjectMapper mapper = new ObjectMapper();
-        String json = mapper.writeValueAsString(account);
-        jsonObject = Json.createObjectBuilder()
-                    .add("code",200)
-                    .add("account",json)
-                    .build();
-        req.getSession().setAttribute("account", account);
-        resp.getWriter().write(jsonObject.toString());
+		String json = mapper.writeValueAsString(account);
+		jsonObject = Json.createObjectBuilder().add("code", 200).add("account", json).build();
+		req.getSession().setAttribute("account", account);
+		resp.getWriter().write(jsonObject.toString());
 	}
 
 	private static String getValue(Part part) throws IOException {
