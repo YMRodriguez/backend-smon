@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import es.socialmoney.dao.AccountDAOImplementation;
 import es.socialmoney.model.Account;
@@ -29,7 +31,7 @@ public class SearchServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 	
 		StringBuilder buffer = new StringBuilder();
         BufferedReader reader = req.getReader();
@@ -45,14 +47,15 @@ public class SearchServlet extends HttpServlet{
 		Account account = AccountDAOImplementation.getInstance().read(username);
 		
 		if (account != null) {
-			ObjectMapper mapper = new ObjectMapper();
-            String json = mapper.writeValueAsString(account);
-			 jsonObject = Json.createObjectBuilder()
+			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            String json = gson.toJson(account);
+			jsonObject = Json.createObjectBuilder()
                        .add("code",200)
                        .add("account", json)
                        .build();
            resp.setContentType("application/json");
            resp.setCharacterEncoding("UTF-8");	
+           req.getSession().setAttribute("account", account);
            resp.getWriter().write(jsonObject.toString());
 		}
 		else {
