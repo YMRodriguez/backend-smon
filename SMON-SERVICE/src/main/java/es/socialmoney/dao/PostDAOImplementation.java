@@ -71,14 +71,17 @@ public class PostDAOImplementation implements PostDAO {
 	}
 
 	@Override
-	public List<Post> readAll(String username) {
-		List<Post> res = new ArrayList<Post>();
-		for (Post post : this.readAll())
-			if (post.getAuthor().equals(username))
-				res.add(post);
-		return res;
+    public List<Post> readAll(String username) {
+        List<Post> res = new ArrayList<Post>();
+        for (Post post : this.readAll()) {
+        	String a = post.getAuthor().getUsername();
+        	String b = username;
+            if (post.getAuthor().getUsername().equals(username))
+                res.add(post);
+        	}
+        return res;
 
-	}
+    }
 
 	@Override
 	public List<Post> readAll(List<String> usernames) {
