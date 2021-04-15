@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.List;
 import javax.persistence.*;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 @Table(name = "accounts")
 public class Account implements Serializable {
@@ -12,21 +14,30 @@ public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Expose
 	@Column(nullable = false, length = 24)
 	private String username;
+	@Expose
 	@Column(nullable = false)
 	private String password;
+	@Expose
 	@Column(nullable = false, length = 56)
 	private String name;
+	@Expose
 	@Column(nullable = false)
 	private int age;
+	@Expose
 	@Column(columnDefinition = "boolean default false")
 	private boolean isadmin;
+	@Expose
 	private String description;
+	@Expose
 	private String link;
+	@Expose
 	@Column(columnDefinition = "boolean default false")
 	private boolean showprofits;
 	@Lob
+	@Expose
 	private byte[] picture;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "author")

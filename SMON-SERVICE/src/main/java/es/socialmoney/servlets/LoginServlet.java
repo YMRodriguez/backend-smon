@@ -13,6 +13,9 @@ import es.socialmoney.dao.AccountDAOImplementation;
 import es.socialmoney.model.Account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -35,8 +38,8 @@ public class LoginServlet extends HttpServlet {
         JsonObject jsonObject = jsonReader.readObject();
         Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
         if(account!=null && jsonObject.getString("password").equals(account.getPassword())) {
-            ObjectMapper mapper = new ObjectMapper();
-            String json = mapper.writeValueAsString(account);
+            Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+            String json = gson.toJson(account);
             jsonObject = Json.createObjectBuilder()
                         .add("code",200)
                         .add("account",json)
