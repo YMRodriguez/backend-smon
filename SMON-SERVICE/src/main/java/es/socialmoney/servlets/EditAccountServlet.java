@@ -49,7 +49,7 @@ public class EditAccountServlet extends HttpServlet {
 		
 
 		Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
-
+		System.out.println(account);
 		account.setShowprofits(profits);
 
 		if (password != null) {
@@ -59,11 +59,13 @@ public class EditAccountServlet extends HttpServlet {
 			account.setDescription(description);
 		}
 
-		if (fileAsByteArray.length == 0) {
+		if (fileAsByteArray.length != 0) {
 			account.setPicture(fileAsByteArray);
 		}
+		
+		AccountDAOImplementation.getInstance().update(account);
 
-        Account editedAccount = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
+
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
@@ -73,8 +75,8 @@ public class EditAccountServlet extends HttpServlet {
                     .add("code",200)
                     .add("account",json)
                     .build();
+        req.getSession().setAttribute("account", account);
         resp.getWriter().write(jsonObject.toString());
-        req.getSession().setAttribute("account", editedAccount);
 	}
 
 	private static String getValue(Part part) throws IOException {
