@@ -60,9 +60,8 @@ public class DeletePost extends HttpServlet {
         JsonReader jsonReader = Json.createReader(new StringReader(data));
         JsonObject jsonObject = jsonReader.readObject();
         
-        
-        Integer i = Integer.parseInt(jsonObject.getString("CAMVIAR ESTO POR LA PROP")) ;
-        Post p = PostDAOImplementation.getInstance().read(i); //aqui meter el integer que venga de react
+        System.out.println(jsonObject);
+        Post p = PostDAOImplementation.getInstance().read(jsonObject.getInt("id")); 
         
         Post posted = PostDAOImplementation.getInstance().delete(p);
 		
