@@ -1,4 +1,4 @@
-package es.socialmoney.rest;
+/*package es.socialmoney.rest;
 
 import javax.ws.rs.ApplicationPath;
 
@@ -16,4 +16,4 @@ public class App extends ResourceConfig {
 
         }
 
-}
+}*/

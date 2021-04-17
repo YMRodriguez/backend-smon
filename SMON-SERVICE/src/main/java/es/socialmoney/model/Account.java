@@ -3,7 +3,10 @@ package es.socialmoney.model;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.persistence.*;
+
+import com.google.gson.annotations.Expose;
 
 @Entity
 @Table(name = "accounts")
@@ -12,44 +15,61 @@ public class Account implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Expose
 	@Column(nullable = false, length = 24)
 	private String username;
+	@Expose
 	@Column(nullable = false)
 	private String password;
+	@Expose
 	@Column(nullable = false, length = 56)
 	private String name;
+	@Expose
 	@Column(nullable = false)
 	private int age;
+	@Expose
 	@Column(columnDefinition = "boolean default false")
 	private boolean isadmin;
+	@Expose
 	private String description;
+	@Expose
 	private String link;
+	@Expose
 	@Column(columnDefinition = "boolean default false")
 	private boolean showprofits;
 	@Lob
+	@Expose
 	private byte[] picture;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "author")
-	private List<Integer> posts;
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "author")
+	private List<Post> posts;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "follows", joinColumns = @JoinColumn(name = "follower"), inverseJoinColumns = @JoinColumn(name = "followed"))
-	private List<String> following;
+	private List<Account> following;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "follows", joinColumns = @JoinColumn(name = "followed"), inverseJoinColumns = @JoinColumn(name = "follower"))
-	private List<String> followers;
+	private List<Account> followers;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollower"), inverseJoinColumns = @JoinColumn(name = "superfollowed"))
-	private List<String> superfollowing;
+	private List<Account> superfollowing;
 
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollowed"), inverseJoinColumns = @JoinColumn(name = "superfollower"))
-	private List<String> superfollowers;
+	private List<Account> superfollowers;
 
 	public Account() {
 		super();
+	}
+
+	public Account(String username, String password, String name, int age) {
+		super();
+		this.username = username;
+		this.password = password;
+		this.name = name;
+		this.age = age;
 	}
 
 	public String getUsername() {
@@ -124,43 +144,43 @@ public class Account implements Serializable {
 		this.picture = picture;
 	}
 
-	public List<Integer> getPosts() {
+	public List<Post> getPosts() {
 		return posts;
 	}
 
-	public void setPosts(List<Integer> posts) {
+	public void setPosts(List<Post> posts) {
 		this.posts = posts;
 	}
 
-	public List<String> getFollowing() {
+	public List<Account> getFollowing() {
 		return following;
 	}
 
-	public void setFollowing(List<String> following) {
+	public void setFollowing(List<Account> following) {
 		this.following = following;
 	}
 
-	public List<String> getFollowers() {
+	public List<Account> getFollowers() {
 		return followers;
 	}
 
-	public void setFollowers(List<String> followers) {
+	public void setFollowers(List<Account> followers) {
 		this.followers = followers;
 	}
 
-	public List<String> getSuperfollowing() {
+	public List<Account> getSuperfollowing() {
 		return superfollowing;
 	}
 
-	public void setSuperfollowing(List<String> superfollowing) {
+	public void setSuperfollowing(List<Account> superfollowing) {
 		this.superfollowing = superfollowing;
 	}
 
-	public List<String> getSuperfollowers() {
+	public List<Account> getSuperfollowers() {
 		return superfollowers;
 	}
 
-	public void setSuperfollowers(List<String> superfollowers) {
+	public void setSuperfollowers(List<Account> superfollowers) {
 		this.superfollowers = superfollowers;
 	}
 

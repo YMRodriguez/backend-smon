@@ -1,247 +1,274 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 
-xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 
-xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <modelVersion>4.0.0</modelVersion>
+	<modelVersion>4.0.0</modelVersion>
 
-  <groupId>SMON-SERVICE</groupId>
+	<groupId>SMON-SERVICE</groupId>
 
-  <artifactId>SMON-SERVICE</artifactId>
+	<artifactId>SMON-SERVICE</artifactId>
 
-  <version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 
-  <packaging>war</packaging>
+	<packaging>war</packaging>
 
-  <build>
+	<build>
 
-    <plugins>
+		<plugins>
 
-      <plugin>
+			<plugin>
 
-        <artifactId>maven-compiler-plugin</artifactId>
+				<artifactId>maven-compiler-plugin</artifactId>
 
-        <version>3.8.0</version>
+				<version>3.8.0</version>
 
-        <configuration>
+				<configuration>
 
-          <source>1.8</source>
+					<source>1.8</source>
 
-          <target>1.8</target>
+					<target>1.8</target>
 
-        </configuration>
+				</configuration>
 
-      </plugin>
+			</plugin>
 
-      <plugin>
+			<plugin>
 
-        <artifactId>maven-war-plugin</artifactId>
+				<artifactId>maven-war-plugin</artifactId>
 
-        <version>3.3.1</version>
+				<version>3.3.1</version>
 
-        <configuration>
+				<configuration>
 
-          <warSourceDirectory>WebContent</warSourceDirectory>
+					<warSourceDirectory>WebContent</warSourceDirectory>
 
-          <failOnMissingWebXml>false</failOnMissingWebXml>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
 
-        </configuration>
+				</configuration>
 
-      </plugin>
+			</plugin>
 
-      <plugin>
+			<plugin>
 
-            <artifactId>maven-surefire-plugin</artifactId>
+				<artifactId>maven-surefire-plugin</artifactId>
 
-            <version>2.22.2</version>
+				<version>2.22.2</version>
 
-      </plugin>
+			</plugin>
 
-      <plugin>
+			<plugin>
 
-            <artifactId>maven-failsafe-plugin</artifactId>
+				<artifactId>maven-failsafe-plugin</artifactId>
 
-            <version>2.22.2</version>
+				<version>2.22.2</version>
 
-      </plugin>
+			</plugin>
 
-    </plugins>
+		</plugins>
 
-  </build>
+	</build>
 
- 
 
-  <dependencies>
 
-        <dependency>
+	<dependencies>
 
-                <groupId>org.hibernate</groupId>
+		<dependency>
 
-                <artifactId>hibernate-core</artifactId>
+			<groupId>org.hibernate</groupId>
 
-                <version>5.3.5.Final</version>
+			<artifactId>hibernate-core</artifactId>
 
-        </dependency>
+			<version>5.3.5.Final</version>
 
-        <dependency>
+		</dependency>
 
-                <groupId>com.h2database</groupId>
+		<dependency>
 
-                <artifactId>h2</artifactId>
+			<groupId>com.h2database</groupId>
 
-                <version>1.4.197</version>
+			<artifactId>h2</artifactId>
 
-        </dependency>
+			<version>1.4.197</version>
 
-        <dependency>
+		</dependency>
 
-            <groupId>javax.servlet</groupId>
+		<dependency>
 
-            <artifactId>javax.servlet-api</artifactId>
+			<groupId>javax.servlet</groupId>
 
-            <version>4.0.0</version>
+			<artifactId>javax.servlet-api</artifactId>
 
-            <scope>provided</scope>
+			<version>4.0.0</version>
 
-         </dependency>
+			<scope>provided</scope>
 
-        <dependency>
+		</dependency>
 
-                <groupId>jstl</groupId>
+		<dependency>
 
-                <artifactId>jstl</artifactId>
+			<groupId>jstl</groupId>
 
-                <version>1.2</version>
+			<artifactId>jstl</artifactId>
 
-        </dependency>
+			<version>1.2</version>
 
-        <dependency>
+		</dependency>
 
-                <groupId>taglibs</groupId>
+		<dependency>
 
-                <artifactId>standard</artifactId>
+			<groupId>taglibs</groupId>
 
-                <version>1.1.2</version>
+			<artifactId>standard</artifactId>
 
-        </dependency>
+			<version>1.1.2</version>
 
-        <dependency>
+		</dependency>
 
-                <groupId>taglibs</groupId>
+		<dependency>
 
-                <artifactId>c</artifactId>
+			<groupId>taglibs</groupId>
 
-                <version>1.1.2</version>
+			<artifactId>c</artifactId>
 
-                <type>tld</type>
+			<version>1.1.2</version>
 
-        </dependency>
+			<type>tld</type>
 
-        <dependency>
+		</dependency>
 
-                  <groupId>com.google.guava</groupId>
+		<dependency>
 
-                  <artifactId>guava</artifactId>
+			<groupId>com.google.guava</groupId>
 
-                  <version>24.0-jre</version>
+			<artifactId>guava</artifactId>
 
-         </dependency>
+			<version>24.0-jre</version>
 
-        <dependency>
+		</dependency>
 
-                <groupId>javax.ws.rs</groupId>
+		<dependency>
 
-                <artifactId>javax.ws.rs-api</artifactId>
+			<groupId>javax.ws.rs</groupId>
 
-                <version>2.1</version>
+			<artifactId>javax.ws.rs-api</artifactId>
 
-        </dependency>
+			<version>2.1</version>
 
-        <dependency>
+		</dependency>
 
-                <groupId>org.glassfish.jersey.containers</groupId>
+		<dependency>
 
-                <artifactId>jersey-container-servlet</artifactId>
+			<groupId>org.glassfish.jersey.containers</groupId>
 
-                <version>2.26</version>
+			<artifactId>jersey-container-servlet</artifactId>
 
-        </dependency>
+			<version>2.26</version>
 
-        <dependency>
+		</dependency>
 
-                <groupId>org.glassfish.jersey.core</groupId>
+		<dependency>
 
-                <artifactId>jersey-server</artifactId>
+			<groupId>org.glassfish.jersey.core</groupId>
 
-                <version>2.26</version>
+			<artifactId>jersey-server</artifactId>
 
-        </dependency>
+			<version>2.26</version>
 
-        <dependency>
+		</dependency>
 
-                <groupId>org.glassfish.jersey.inject</groupId>
+		<dependency>
 
-                <artifactId>jersey-hk2</artifactId>
+			<groupId>org.glassfish.jersey.inject</groupId>
 
-                <version>2.26</version>
+			<artifactId>jersey-hk2</artifactId>
 
-        </dependency>
+			<version>2.26</version>
 
-        <dependency>
+		</dependency>
 
-                    <groupId>org.glassfish.jersey.media</groupId>
+		<dependency>
 
-                   <artifactId>jersey-media-json-jackson</artifactId>
+			<groupId>org.glassfish.jersey.media</groupId>
 
-                   <version>2.26</version>
+			<artifactId>jersey-media-json-jackson</artifactId>
 
-        </dependency>
+			<version>2.26</version>
 
-        <dependency>
+		</dependency>
 
-                <groupId>org.glassfish.jersey.media</groupId>
+		<dependency>
 
-                <artifactId>jersey-media-json-processing</artifactId>
+			<groupId>org.glassfish.jersey.media</groupId>
 
-                <version>2.26</version>
+			<artifactId>jersey-media-json-processing</artifactId>
 
-        </dependency>
+			<version>2.26</version>
 
-        <dependency>
+		</dependency>
 
-                  <groupId>org.seleniumhq.selenium</groupId>
+		<dependency>
 
-                  <artifactId>selenium-java</artifactId>
+			<groupId>org.seleniumhq.selenium</groupId>
 
-                  <version>3.141.59</version>
+			<artifactId>selenium-java</artifactId>
 
-         </dependency>
+			<version>3.141.59</version>
 
-         <dependency>
+		</dependency>
 
-                 <groupId>org.junit.jupiter</groupId>
+		<dependency>
 
-                 <artifactId>junit-jupiter-engine</artifactId>
+			<groupId>org.junit.jupiter</groupId>
 
-                 <version>5.7.0</version>
+			<artifactId>junit-jupiter-engine</artifactId>
 
-                  <scope>test</scope>
+			<version>5.7.0</version>
 
-         </dependency>
+			<scope>test</scope>
 
-         <dependency>
+		</dependency>
 
-                  <groupId>org.junit.vintage</groupId>
+		<dependency>
 
-                  <artifactId>junit-vintage-engine</artifactId>
+			<groupId>org.junit.vintage</groupId>
 
-                  <version>5.7.0</version>
+			<artifactId>junit-vintage-engine</artifactId>
 
-                  <scope>test</scope>
+			<version>5.7.0</version>
 
-         </dependency>  
+			<scope>test</scope>
 
-  </dependencies>
+		</dependency>
+		<dependency>
+
+			<groupId>org.glassfish.jaxb</groupId>
+
+			<artifactId>jaxb-runtime</artifactId>
+
+			<version>2.3.0</version>
+
+		</dependency>
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+			<version>2.8.6</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>2.7.0</version>
+		</dependency>
+		
+		<dependency>
+		
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.6</version>
+		</dependency>
+
+	</dependencies>
 
 </project>
