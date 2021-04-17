@@ -17,6 +17,9 @@ import es.socialmoney.dao.AccountDAOImplementation;
 import es.socialmoney.model.Account;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -63,8 +66,8 @@ public class EditAccountServlet extends HttpServlet {
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
-		ObjectMapper mapper = new ObjectMapper();
-		String json = mapper.writeValueAsString(account);
+		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+		String json = gson.toJson(account);
 		jsonObject = Json.createObjectBuilder().add("code", 200).add("account", json).build();
 		req.getSession().setAttribute("account", account);
 		resp.getWriter().write(jsonObject.toString());

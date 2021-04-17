@@ -20,71 +20,65 @@ import es.socialmoney.model.Post;
 /**
  * Servlet implementation class DeletePost
  */
-@WebServlet(name = "DeleteServlet", urlPatterns = {
-	    "/deletePost",
-	    //"/PostServlet"
-		})
+@WebServlet(name = "DeleteServlet", urlPatterns = { "/deletePost",
+		// "/PostServlet"
+})
 public class DeletePost extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public DeletePost() {
-        super();
-        // TODO Auto-generated constructor stub
-    }
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#HttpServlet()
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public DeletePost() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 
-		
-		StringBuilder buffer = new StringBuilder();
-        BufferedReader reader = request.getReader();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            buffer.append(line);
-        }
-        String data = buffer.toString();
-        JsonReader jsonReader = Json.createReader(new StringReader(data));
-        JsonObject jsonObject = jsonReader.readObject();
-        
-        System.out.println(jsonObject);
-        Post p = PostDAOImplementation.getInstance().read(jsonObject.getInt("id")); 
-        
-        Post posted = PostDAOImplementation.getInstance().delete(p);
-		
-			
-		
-		
-		if (posted != null) {
-			
-			 jsonObject = Json.createObjectBuilder()
-                        .add("code",200)
-                        .build();
-            response.setContentType("application/json");
-            response.setCharacterEncoding("UTF-8");	
-            response.getWriter().write(jsonObject.toString());
+		response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 
-			
+		StringBuilder buffer = new StringBuilder();
+		BufferedReader reader = request.getReader();
+		String line;
+		while ((line = reader.readLine()) != null) {
+			buffer.append(line);
 		}
-		else {
-			 jsonObject = Json.createObjectBuilder()
-                    .add("code",404)
-                    .build();
-		}   
-		
+		String data = buffer.toString();
+		JsonReader jsonReader = Json.createReader(new StringReader(data));
+		JsonObject jsonObject = jsonReader.readObject();
+
+		System.out.println(jsonObject);
+		Post p = PostDAOImplementation.getInstance().read(jsonObject.getInt("id"));
+
+		Post posted = PostDAOImplementation.getInstance().delete(p);
+
+		if (posted != null) {
+
+			jsonObject = Json.createObjectBuilder().add("code", 200).build();
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(jsonObject.toString());
+
+		} else {
+			jsonObject = Json.createObjectBuilder().add("code", 404).build();
+		}
+
 	}
 
 }

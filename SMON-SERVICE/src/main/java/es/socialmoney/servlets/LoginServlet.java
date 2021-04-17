@@ -46,9 +46,9 @@ public class LoginServlet extends HttpServlet {
                         .build();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");	
-            resp.getWriter().write(jsonObject.toString());
             req.getSession().setAttribute("loggedin",true);
             req.getSession().setAttribute("account", account);
+            resp.getWriter().write(jsonObject.toString());
         }else{
             jsonObject = Json.createObjectBuilder()
                     .add("code",404)
