@@ -18,6 +18,7 @@ import com.google.gson.GsonBuilder;
 
 import es.socialmoney.dao.AccountDAOImplementation;
 import es.socialmoney.model.Account;
+import es.socialmoney.serializers.FollowsSerializer;
 
 /**
  * Implementation of PublicationsServlet class
@@ -43,15 +44,26 @@ public class SearchServlet extends HttpServlet {
 		Account account = AccountDAOImplementation.getInstance().read(username);
 
 		if (account != null) {
+			
 			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 			String json = gson.toJson(account);
-			jsonObject = Json.createObjectBuilder().add("code", 200).add("account", json).build();
+			
+			GsonBuilder gsonBuilder = new GsonBuilder();
+			gsonBuilder.registerTypeAdapter(Account.class, new FollowsSerializer());
+			Gson gson2 = gsonBuilder.create();
+			String jsonuserfollows = gson2.toJson(account);
+			
+            jsonObject = Json.createObjectBuilder()
+                        .add("code",200)
+                        .add("account",json)
+                        .add("visitFollows",jsonuserfollows)
+                        .build();
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
 			req.getSession().setAttribute("account", account);
 			resp.getWriter().write(jsonObject.toString());
 		} else {
-			jsonObject = Json.createObjectBuilder().add("code", 204).build();
+			jsonObject = Json.createObjectBuilder().add("code", 404).build();
 		}
 
 	}
