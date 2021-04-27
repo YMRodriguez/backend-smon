@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import es.socialmoney.dao.AccountDAOImplementation;
 import es.socialmoney.model.Account;
+import es.socialmoney.serializers.FollowsSerializer;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -38,11 +39,19 @@ public class LoginServlet extends HttpServlet {
         JsonObject jsonObject = jsonReader.readObject();
         Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
         if(account!=null && jsonObject.getString("password").equals(account.getPassword())) {
+        	
             Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
             String json = gson.toJson(account);
+            
+			GsonBuilder gsonBuilder = new GsonBuilder();
+			gsonBuilder.registerTypeAdapter(Account.class, new FollowsSerializer());
+			Gson gson2 = gsonBuilder.create();
+			String jsonuserfollows = gson2.toJson(account);
+			
             jsonObject = Json.createObjectBuilder()
                         .add("code",200)
                         .add("account",json)
+                        .add("userFollows",jsonuserfollows)
                         .build();
             resp.setContentType("application/json");
             resp.setCharacterEncoding("UTF-8");	

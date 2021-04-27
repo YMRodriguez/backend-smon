@@ -137,8 +137,13 @@ public class Account implements Serializable {
 	}
 
 	public byte[] getPicture() {
-		return picture;
-	}
+        if (this.picture != null) {
+            return picture;
+        }
+        else {
+            return new byte[0];
+        }
+    }
 
 	public void setPicture(byte[] picture) {
 		this.picture = picture;
