@@ -27,10 +27,12 @@ public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        StringBuilder buffer = new StringBuilder();
+        System.out.println("holo");
+    	StringBuilder buffer = new StringBuilder();
         BufferedReader reader = req.getReader();
         String line;
         resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        resp.addHeader("Access-Control-Allow-Credentials", "true");
         while ((line = reader.readLine()) != null) {
             buffer.append(line);
         }
