@@ -19,7 +19,7 @@ public class Account implements Serializable {
 	@Column(nullable = false, length = 24)
 	private String username;
 	@Expose
-	@Column(nullable = false)
+	@Column(nullable = false, length = 1000)
 	private String password;
 	@Expose
 	@Column(nullable = false, length = 56)
