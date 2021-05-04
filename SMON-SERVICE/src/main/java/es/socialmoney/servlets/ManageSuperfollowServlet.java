@@ -45,10 +45,10 @@ public class ManageSuperfollowServlet extends HttpServlet{
         
 		String myusername = jsonObject.getString("myusername");
 		String username = jsonObject.getString("username");
+		String button = jsonObject.getString("button");
 		Account userAccount = AccountDAOImplementation.getInstance().read(myusername);
 		Account followerAccount = AccountDAOImplementation.getInstance().read(username);
-		if (jsonObject.getString("button") != null) {
-			String button = jsonObject.getString("button");
+		
 			if (button.equals("Accept")) {
 				List<Account> pending = userAccount.getSuperFollowersPending();
 				for (int i=0; i< pending.size(); i++) {
@@ -62,7 +62,7 @@ public class ManageSuperfollowServlet extends HttpServlet{
 				followers.add(followerAccount);
 				userAccount.setSuperfollowers(followers);
 				
-			} else if (button.contentEquals("Reject")) {
+			} else if (button.equals("Reject")) {
 				List<Account> pending = userAccount.getSuperFollowersPending();
 				for (int i=0; i< pending.size(); i++) {
 					if (pending.get(i).getUsername().equals(followerAccount.getUsername())) {
@@ -70,13 +70,19 @@ public class ManageSuperfollowServlet extends HttpServlet{
 					}
 				}
 				userAccount.setSuperFollowersPending(pending);
+			} else if (button.equals("Delete")) {
+				List<Account> superfollowers = userAccount.getSuperfollowers();
+				for (int i=0; i< superfollowers.size(); i++) {
+					if (superfollowers.get(i).getUsername().equals(followerAccount.getUsername())) {
+						superfollowers.remove(i);
+					}
+				}
+				userAccount.setSuperfollowers(superfollowers);	
 			}
-		} 
 		
 		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(userAccount);		  
-		Account updatedFollowedAccount = AccountDAOImplementation.getInstance().update(followerAccount);
 				
-		if (updatedUserAccount!= null & updatedFollowedAccount!= null) {
+		if (updatedUserAccount!= null) {
 			GsonBuilder gsonBuilder = new GsonBuilder();
 			gsonBuilder.registerTypeAdapter(Account.class, new SuperfollowsSerializer());
 			Gson gson = gsonBuilder.create();
