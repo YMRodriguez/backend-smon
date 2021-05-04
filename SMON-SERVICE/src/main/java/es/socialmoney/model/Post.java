@@ -116,7 +116,7 @@ public class Post implements Serializable {
 		int result = 1;
 		result = prime * result + ((author == null) ? 0 : author.hashCode());
 		result = prime * result + ((content == null) ? 0 : content.hashCode());
-		result = prime * result + ((date == null) ? 0 : date.hashCode());
+//		result = prime * result + ((date == null) ? 0 : date.hashCode());
 		result = prime * result + id;
 		result = prime * result + (isexclusive ? 1231 : 1237);
 		result = prime * result + (isfundan ? 1231 : 1237);

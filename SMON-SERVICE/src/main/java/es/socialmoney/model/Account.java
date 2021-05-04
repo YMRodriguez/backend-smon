@@ -56,12 +56,20 @@ public class Account implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "follows", joinColumns = @JoinColumn(name = "followed"), inverseJoinColumns = @JoinColumn(name = "follower"))
 	private List<Account> followers;
+	
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@JoinTable(name = "superfollows_pending")
+	private List<Account> superfollowerspending; 
+	
+//	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+//	@JoinTable(name = "superfollows")
+//	private List<Account> superfollowerspending; 
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollower"), inverseJoinColumns = @JoinColumn(name = "superfollowed"))
 	private List<Account> superfollowing;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollowed"), inverseJoinColumns = @JoinColumn(name = "superfollower"))
 	private List<Account> superfollowers;
 
@@ -161,6 +169,14 @@ public class Account implements Serializable {
 		this.posts = posts;
 	}
 
+	public List<Account> getSuperFollowersPending() {
+		return superfollowerspending;
+	}
+
+	public void setSuperFollowersPending(List<Account> superfollowerspending) {
+		this.superfollowerspending = superfollowerspending;
+	}
+	
 	public List<Account> getFollowing() {
 		return following;
 	}

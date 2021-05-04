@@ -19,20 +19,18 @@ import com.google.gson.GsonBuilder;
 
 import es.socialmoney.dao.AccountDAOImplementation;
 import es.socialmoney.model.Account;
-import es.socialmoney.serializers.FollowsSerializer;
-
+import es.socialmoney.serializers.SuperfollowsSerializer;
 
 /**
- *Implementation of FollowServlet class 
+ *Implementation of PendingServlet class 
  */
-@WebServlet("/follow")
-public class FollowServlet extends HttpServlet{
+@WebServlet("/pending")
+public class PendingServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int indicator1 = -1;
-		int indicator2 = -1;
 		
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 	
 		StringBuilder buffer = new StringBuilder();
@@ -46,29 +44,44 @@ public class FollowServlet extends HttpServlet{
         JsonObject jsonObject = jsonReader.readObject();
         
 		String username = jsonObject.getString("username");
-		String followed = jsonObject.getString("followed");
+		String pendingusername = jsonObject.getString("pendingusername");
+		String decision = jsonObject.getString("decision");
 		Account userAccount = AccountDAOImplementation.getInstance().read(username);
-		Account followedAccount = AccountDAOImplementation.getInstance().read(followed);
+		Account pendingAccount = AccountDAOImplementation.getInstance().read(pendingusername);
 		
-		//Update the following list of the main user
-		List<Account> following = userAccount.getFollowing();
-		for (int i=0; i< following.size(); i++) {
-			if (following.get(i).getUsername().equals(followedAccount.getUsername())) {
-				indicator1 = 1;
-				following.remove(i);
+		List<Account> pending = userAccount.getSuperFollowersPending();
+		List<Account> superfollowers = userAccount.getSuperfollowers();
+		List<Account> superfollowing = pendingAccount.getSuperfollowing();
+		
+		//Accept a user into your community
+		if (decision.equals("accept")) {
+			superfollowing.add(userAccount);
+			superfollowers.add(pendingAccount);
+		}
+		
+		//Deny a user's request to join your community
+		for (int i=0; i< pending.size(); i++) {
+			if (pending.get(i).getUsername().equals(pendingAccount.getUsername())) {
+				pending.remove(i);
 			}
 		}
-		if (indicator1 == -1) {
-			following.add(followedAccount);
-		}
-		userAccount.setFollowing(following);
 		
-		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(userAccount);		  
-		Account updatedFollowerAccount = AccountDAOImplementation.getInstance().update(followedAccount);
+		userAccount.setSuperFollowersPending(pending);
+		userAccount.setSuperfollowers(superfollowers);
 		
-		if (updatedUserAccount!= null & updatedFollowerAccount!= null) {
+		pendingAccount.setSuperfollowing(superfollowing);
+		
+		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(userAccount);
+		Account updatedPendingAccount = AccountDAOImplementation.getInstance().update(pendingAccount);
+		
+		if (updatedUserAccount!= null & updatedPendingAccount!= null) {
+			GsonBuilder gsonBuilder = new GsonBuilder();
+			gsonBuilder.registerTypeAdapter(Account.class, new SuperfollowsSerializer());
+			Gson gson = gsonBuilder.create();
+			String jsonuserfollows = gson.toJson(updatedUserAccount);
 			jsonObject = Json.createObjectBuilder()
                        .add("code",200)
+                       .add("userSuperFollows",jsonuserfollows)
                        .build();
            resp.setContentType("application/json");
            resp.setCharacterEncoding("UTF-8");	
@@ -78,9 +91,7 @@ public class FollowServlet extends HttpServlet{
 			 jsonObject = Json.createObjectBuilder()
                    .add("code",404)
                    .build();
-		}        
+		} 
 		
 	}
-	
-
 }
