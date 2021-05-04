@@ -19,22 +19,20 @@ import com.google.gson.GsonBuilder;
 
 import es.socialmoney.dao.AccountDAOImplementation;
 import es.socialmoney.model.Account;
-import es.socialmoney.serializers.FollowsSerializer;
+import es.socialmoney.serializers.SuperfollowsSerializer;
 
 
 /**
  *Implementation of FollowServlet class 
  */
-@WebServlet("/follow")
-public class FollowServlet extends HttpServlet{
+@WebServlet("/superfollow")
+public class SuperfollowServlet extends HttpServlet{
 	private static final long serialVersionUID = 1L;
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int indicator1 = -1;
-		int indicator2 = -1;
 		
-		resp.addHeader("Access-Control-Allow-Credentials", "true");
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 	
 		StringBuilder buffer = new StringBuilder();
         BufferedReader reader = req.getReader();
@@ -46,35 +44,38 @@ public class FollowServlet extends HttpServlet{
         JsonReader jsonReader = Json.createReader(new StringReader(data));
         JsonObject jsonObject = jsonReader.readObject();
         
-        
-		boolean loggedin = req.getSession().getAttribute("loggedin") != null
-				&& (boolean) req.getSession().getAttribute("loggedin");
-		Account account = loggedin
-				? (req.getSession().getAttribute("account") != null ? (Account) req.getSession().getAttribute("account")
-						: null)
-				: null;
-        
-		String followed = jsonObject.getString("followed");
-		Account followedAccount = AccountDAOImplementation.getInstance().read(followed);
+		String myusername = jsonObject.getString("myusername");
+		String username = jsonObject.getString("username");
+		Account userAccount = AccountDAOImplementation.getInstance().read(myusername);
+		Account followedAccount = AccountDAOImplementation.getInstance().read(username);
 		
-		//Update the following list of the main user
-		List<Account> following = account.getFollowing();
-		for (int i=0; i< following.size(); i++) {
-			if (following.get(i).getUsername().equals(followedAccount.getUsername())) {
+		//Check if user already superfollowed the account in order to leave the community (unfollow)
+		List<Account> followers = followedAccount.getSuperfollowers(); 
+		List<Account> pending = followedAccount.getSuperFollowersPending();
+		for (int i=0; i< followers.size(); i++) {
+			if (followers.get(i).getUsername().equals(userAccount.getUsername())) {
 				indicator1 = 1;
-				following.remove(i);
+				followers.remove(i);
 			}
 		}
-		if (indicator1 == -1) {
-			following.add(followedAccount);
+		//Remove user from pending list if user regrets superfollowing an account while being pending 
+		for (int i=0; i< pending.size(); i++) {
+			if (pending.get(i).getUsername().equals(userAccount.getUsername())) {
+				indicator1 = 2;
+				pending.remove(i);
+			}
 		}
-		account.setFollowing(following);
+		//Add user to pending list
+		if (indicator1 == -1) {
+			pending.add(userAccount);
+		}
+		followedAccount.setSuperfollowers(followers);
+		followedAccount.setSuperFollowersPending(pending);
 		
-
-		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(account);		  
-		Account updatedFollowerAccount = AccountDAOImplementation.getInstance().update(followedAccount);
+		Account updatedFollowedAccount = AccountDAOImplementation.getInstance().update(followedAccount);	  
+		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(userAccount);
 		
-		if (updatedUserAccount!= null & updatedFollowerAccount!= null) {
+		if (updatedUserAccount!= null & updatedFollowedAccount!= null) {
 			jsonObject = Json.createObjectBuilder()
                        .add("code",200)
                        .build();
@@ -90,5 +91,4 @@ public class FollowServlet extends HttpServlet{
 		
 	}
 	
-
 }
