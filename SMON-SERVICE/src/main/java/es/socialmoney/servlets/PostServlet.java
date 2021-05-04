@@ -29,12 +29,10 @@ public class PostServlet extends HttpServlet {
 
 	public PostServlet() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		// TODO Auto-generated method stub
 
 		response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 
