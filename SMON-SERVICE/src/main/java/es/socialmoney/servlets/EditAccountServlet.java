@@ -40,20 +40,20 @@ public class EditAccountServlet extends HttpServlet {
 
 		InputStream filecontent = req.getPart("picture").getInputStream();
 		byte[] fileAsByteArray = IOUtils.toByteArray(filecontent);
-
-		String description = jsonObject.getString("description");
-
-		String password = jsonObject.getString("password");
+		System.out.println(jsonObject);
+		String description = jsonObject.getString("description")!= null? (String)jsonObject.getString("description"):null;
+		System.out.println(description);
+		String password = jsonObject.getString("password")!= null? (String)jsonObject.getString("password"):null;
 
 		boolean profits = jsonObject.getBoolean("showprofits");
-
+		
 		Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
 		account.setShowprofits(profits);
 
 		if (password != null) {
 			account.setPassword(password);
 		}
-		if (description != null) {
+		if (description != null && description.length()>0) {
 			account.setDescription(description);
 		}
 

@@ -23,9 +23,10 @@ public class LogoutServlet extends HttpServlet {
 
 	@Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
+        resp.addHeader("Access-Control-Allow-Credentials", "true");
         JsonObject jsonObject;
         boolean loggedin = req.getSession().getAttribute("loggedin") != null &&
                 (boolean) req.getSession().getAttribute("loggedin");

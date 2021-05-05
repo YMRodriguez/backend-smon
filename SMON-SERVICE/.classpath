@@ -24,10 +24,17 @@
 	</classpathentry>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
+			<attribute name="test" value="true"/>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
-			<attribute name="test" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="lib" path="/home/ramos/Descargas/bcpkix-jdk15to18-168.jar"/>
+	<classpathentry kind="lib" path="/home/ramos/Descargas/bcprov-jdk15to18-168.jar"/>
+	<classpathentry kind="lib" path="/home/ramos/Descargas/commons-codec-1.15/commons-codec-1.15.jar"/>
+	<classpathentry kind="lib" path="/home/ramos/Descargas/commons-codec-1.15/commons-codec-1.15-tests.jar"/>
+	<classpathentry kind="lib" path="/home/ramos/Descargas/commons-codec-1.15/commons-codec-1.15-test-sources.jar"/>
+	<classpathentry kind="lib" path="/home/ramos/Descargas/commons-codec-1.15/commons-codec-1.15-sources.jar"/>
+	<classpathentry kind="lib" path="/home/ramos/Descargas/commons-codec-1.15/commons-codec-1.15-javadoc.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>
