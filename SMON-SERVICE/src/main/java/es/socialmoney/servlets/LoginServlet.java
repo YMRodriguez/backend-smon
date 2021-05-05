@@ -40,7 +40,7 @@ public class LoginServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
     private KeyPair getKeyPairPEM() throws Exception {
-    	ClassLoader classLoader = getClass().getClass().getClassLoader();
+    	ClassLoader classLoader = getClass().getClassLoader();
     	File file = new File(classLoader.getResource("clave.pem").getFile());
     	FileReader fileReader = new FileReader(file);
     	PEMParser pemParser = new PEMParser(fileReader);
