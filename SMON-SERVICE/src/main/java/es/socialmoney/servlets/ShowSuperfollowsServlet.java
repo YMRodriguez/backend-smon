@@ -51,9 +51,9 @@ private static final long serialVersionUID = 1L;
 					buttonvalue = "Pendiente";
 				}
 			}
-			List<Account> superfollowing = userAccount.getSuperfollowing();
-			for (int i=0; i< superfollowing.size(); i++) {
-				if (superfollowing.get(i).getUsername().equals(myusername)) {
+			List<Account> superfollowers = userAccount.getSuperfollowers();
+			for (int i=0; i< superfollowers.size(); i++) {
+				if (superfollowers.get(i).getUsername().equals(myusername)) {
 					buttonvalue = "Unsuperfollow";
 				}
 			}
