@@ -28,6 +28,7 @@ import java.security.KeyPair;
 import java.security.Security;
 import java.security.interfaces.RSAPrivateKey;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -39,8 +40,10 @@ public class LoginServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
     private KeyPair getKeyPairPEM() throws Exception {
-        FileReader fileReader = new FileReader("/home/ramos/clave.pem");
-        PEMParser pemParser = new PEMParser(fileReader);
+    	ClassLoader classLoader = getClass().getClass().getClassLoader();
+    	File file = new File(classLoader.getResource("clave.pem").getFile());
+    	FileReader fileReader = new FileReader(file);
+    	PEMParser pemParser = new PEMParser(fileReader);
         Object pemKeyPair = (Object) pemParser.readObject();
         PEMDecryptorProvider decProv = new JcePEMDecryptorProviderBuilder().build("PASSWORD".toCharArray());
         JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
@@ -50,7 +53,6 @@ public class LoginServlet extends HttpServlet {
      }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("holo");
     	StringBuilder buffer = new StringBuilder();
         BufferedReader reader = req.getReader();
         String line;
