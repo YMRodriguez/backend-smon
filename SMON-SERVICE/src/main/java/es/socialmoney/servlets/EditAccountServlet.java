@@ -50,7 +50,7 @@ public class EditAccountServlet extends HttpServlet {
 		Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
 		account.setShowprofits(profits);
 
-		if (password != null) {
+		if (password != null && password.length()!=0) {
 			account.setPassword(password);
 		}
 		if (description != null && description.length()>0) {
@@ -66,6 +66,7 @@ public class EditAccountServlet extends HttpServlet {
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
 		Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 		String json = gson.toJson(account);
 		jsonObject = Json.createObjectBuilder().add("code", 200).add("account", json).build();
