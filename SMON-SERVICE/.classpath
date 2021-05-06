@@ -2,6 +2,7 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>
+			<attribute name="module" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
@@ -29,12 +30,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/ramos/Descargas/bcpkix-jdk15to18-168.jar"/>
-	<classpathentry kind="lib" path="/home/ramos/Descargas/bcprov-jdk15to18-168.jar"/>
-	<classpathentry kind="lib" path="/home/ramos/Descargas/commons-codec-1.15/commons-codec-1.15.jar"/>
-	<classpathentry kind="lib" path="/home/ramos/Descargas/commons-codec-1.15/commons-codec-1.15-tests.jar"/>
-	<classpathentry kind="lib" path="/home/ramos/Descargas/commons-codec-1.15/commons-codec-1.15-test-sources.jar"/>
-	<classpathentry kind="lib" path="/home/ramos/Descargas/commons-codec-1.15/commons-codec-1.15-sources.jar"/>
-	<classpathentry kind="lib" path="/home/ramos/Descargas/commons-codec-1.15/commons-codec-1.15-javadoc.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

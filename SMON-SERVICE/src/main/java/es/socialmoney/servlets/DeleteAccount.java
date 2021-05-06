@@ -28,6 +28,7 @@ import java.security.KeyPair;
 import java.security.Security;
 import java.security.interfaces.RSAPrivateKey;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -50,8 +51,10 @@ public class DeleteAccount extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */    
     private KeyPair getKeyPairPEM() throws Exception {
-	        FileReader fileReader = new FileReader("/home/ramos/clave.pem");
-	        PEMParser pemParser = new PEMParser(fileReader);
+	    	ClassLoader classLoader = getClass().getClassLoader();
+	    	File file = new File(classLoader.getResource("clave.pem").getFile());
+	    	FileReader fileReader = new FileReader(file);
+   	        PEMParser pemParser = new PEMParser(fileReader);
 	        Object pemKeyPair = (Object) pemParser.readObject();
 	        PEMDecryptorProvider decProv = new JcePEMDecryptorProviderBuilder().build("PASSWORD".toCharArray());
 	        JcaPEMKeyConverter converter = new JcaPEMKeyConverter();

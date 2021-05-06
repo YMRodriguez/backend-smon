@@ -33,13 +33,9 @@ public class PostServlet extends HttpServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-<<<<<<< HEAD
-=======
-		// TODO Auto-generated method stub
-		
+
         //response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
         //response.addHeader("Access-Control-Allow-Credentials", "true");
->>>>>>> 469f05d... feed and fix details
 
 		response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 

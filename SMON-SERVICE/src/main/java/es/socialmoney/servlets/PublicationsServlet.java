@@ -32,7 +32,6 @@ public class PublicationsServlet extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-<<<<<<< HEAD
 		// Get the account from the session if logged in.
 		boolean loggedin = req.getSession().getAttribute("loggedin") != null
 				&& (boolean) req.getSession().getAttribute("loggedin");
@@ -46,29 +45,7 @@ public class PublicationsServlet extends HttpServlet {
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
 		resp.addHeader("Access-Control-Allow-Credentials", "true");
-=======
-		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-		StringBuilder buffer = new StringBuilder();
-		BufferedReader reader = req.getReader();
-		String line;
-		while ((line = reader.readLine()) != null) {
-			buffer.append(line);
-		}
-		String data = buffer.toString();
-		JsonReader jsonReader = Json.createReader(new StringReader(data));
-		JsonObject jsonObject = jsonReader.readObject();
 
-		String username = jsonObject.getString("username"); 
-		
-		List<Post> postList = PostDAOImplementation.getInstance().readAll(username);
-
-		if (postList != null) { //si hay posts -> lo envio
-			GsonBuilder gsonBuilder = new GsonBuilder();
-			gsonBuilder.registerTypeAdapter(Account.class, new AccountSerializer());
-			Gson gson = gsonBuilder.create();
-			String jsonList = gson.toJson(postList);
-			System.out.println(jsonList);
->>>>>>> 469f05d... feed and fix details
 
 		if (account != null) {
 			List<Post> postList = PostDAOImplementation.getInstance().readAll(account.getUsername());
