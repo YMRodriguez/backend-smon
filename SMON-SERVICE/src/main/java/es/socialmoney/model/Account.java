@@ -18,7 +18,6 @@ public class Account implements Serializable {
 	@Expose
 	@Column(nullable = false, length = 24)
 	private String username;
-	@Expose
 	@Column(nullable = false, length = 1000)
 	private String password;
 	@Expose
@@ -34,6 +33,12 @@ public class Account implements Serializable {
 	private String description;
 	@Expose
 	private String link;
+	@Expose
+	private String timeframe;
+	@Expose
+	private String profit;
+	@Expose
+	private String accountType;
 	@Expose
 	@Column(columnDefinition = "boolean default false")
 	private boolean showprofits;
@@ -137,13 +142,12 @@ public class Account implements Serializable {
 	}
 
 	public byte[] getPicture() {
-        if (this.picture != null) {
-            return picture;
-        }
-        else {
-            return new byte[0];
-        }
-    }
+		if (this.picture != null) {
+			return picture;
+		} else {
+			return new byte[0];
+		}
+	}
 
 	public void setPicture(byte[] picture) {
 		this.picture = picture;
@@ -193,10 +197,31 @@ public class Account implements Serializable {
 		return serialVersionUID;
 	}
 
+
+
+	public String getAccountType() {
+		return accountType;
+	}
+
+	public void setAccountType(String accountType) {
+		this.accountType = accountType;
+	}
+
+	@Override
+	public String toString() {
+		return "Account [username=" + username + ", password=" + password + ", name=" + name + ", age=" + age
+				+ ", isadmin=" + isadmin + ", description=" + description + ", link=" + link + ", timeframe="
+				+ timeframe + ", profit=" + profit + ", accountType=" + accountType + ", showprofits=" + showprofits
+				+ ", picture=" + Arrays.toString(picture) + ", posts=" + posts + ", following=" + following
+				+ ", followers=" + followers + ", superfollowing=" + superfollowing + ", superfollowers="
+				+ superfollowers + "]";
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
+		result = prime * result + ((accountType == null) ? 0 : accountType.hashCode());
 		result = prime * result + age;
 		result = prime * result + ((description == null) ? 0 : description.hashCode());
 		result = prime * result + ((followers == null) ? 0 : followers.hashCode());
@@ -207,9 +232,11 @@ public class Account implements Serializable {
 		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + Arrays.hashCode(picture);
 		result = prime * result + ((posts == null) ? 0 : posts.hashCode());
+		result = prime * result + ((profit == null) ? 0 : profit.hashCode());
 		result = prime * result + (showprofits ? 1231 : 1237);
 		result = prime * result + ((superfollowers == null) ? 0 : superfollowers.hashCode());
 		result = prime * result + ((superfollowing == null) ? 0 : superfollowing.hashCode());
+		result = prime * result + ((timeframe == null) ? 0 : timeframe.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
@@ -223,6 +250,11 @@ public class Account implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Account other = (Account) obj;
+		if (accountType == null) {
+			if (other.accountType != null)
+				return false;
+		} else if (!accountType.equals(other.accountType))
+			return false;
 		if (age != other.age)
 			return false;
 		if (description == null) {
@@ -264,6 +296,11 @@ public class Account implements Serializable {
 				return false;
 		} else if (!posts.equals(other.posts))
 			return false;
+		if (profit == null) {
+			if (other.profit != null)
+				return false;
+		} else if (!profit.equals(other.profit))
+			return false;
 		if (showprofits != other.showprofits)
 			return false;
 		if (superfollowers == null) {
@@ -276,6 +313,11 @@ public class Account implements Serializable {
 				return false;
 		} else if (!superfollowing.equals(other.superfollowing))
 			return false;
+		if (timeframe == null) {
+			if (other.timeframe != null)
+				return false;
+		} else if (!timeframe.equals(other.timeframe))
+			return false;
 		if (username == null) {
 			if (other.username != null)
 				return false;
@@ -284,13 +326,20 @@ public class Account implements Serializable {
 		return true;
 	}
 
-	@Override
-	public String toString() {
-		return "Account [username=" + username + ", password=" + password + ", name=" + name + ", age=" + age
-				+ ", isadmin=" + isadmin + ", description=" + description + ", link=" + link + ", showprofits="
-				+ showprofits + ", picture=" + Arrays.toString(picture) + ", posts=" + posts + ", following="
-				+ following + ", followers=" + followers + ", superfollowing=" + superfollowing + ", superfollowers="
-				+ superfollowers + "]";
+	public String getTimeframe() {
+		return timeframe;
+	}
+
+	public void setTimeframe(String timeframe) {
+		this.timeframe = timeframe;
+	}
+
+	public String getProfit() {
+		return profit;
+	}
+
+	public void setProfit(String profit) {
+		this.profit = profit;
 	}
 
 }
