@@ -33,7 +33,15 @@ public class SuperfollowServlet extends HttpServlet{
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int indicator1 = -1;
 		
+		boolean loggedin = req.getSession().getAttribute("loggedin") != null &&
+                (boolean) req.getSession().getAttribute("loggedin");
+        Account account = loggedin ?
+                (req.getSession().getAttribute("account")!= null?
+                        (Account)req.getSession().getAttribute("account"):null)
+                :null;
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 	
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
+
 		StringBuilder buffer = new StringBuilder();
         BufferedReader reader = req.getReader();
         String line;
@@ -44,36 +52,36 @@ public class SuperfollowServlet extends HttpServlet{
         JsonReader jsonReader = Json.createReader(new StringReader(data));
         JsonObject jsonObject = jsonReader.readObject();
         
-		String myusername = jsonObject.getString("myusername");
+		//String myusername = jsonObject.getString("myusername");
 		String username = jsonObject.getString("username");
-		Account userAccount = AccountDAOImplementation.getInstance().read(myusername);
+		//Account userAccount = AccountDAOImplementation.getInstance().read(myusername);
 		Account followedAccount = AccountDAOImplementation.getInstance().read(username);
 		
 		//Check if user already superfollowed the account in order to leave the community (unfollow)
 		List<Account> followers = followedAccount.getSuperfollowers(); 
 		List<Account> pending = followedAccount.getSuperFollowersPending();
 		for (int i=0; i< followers.size(); i++) {
-			if (followers.get(i).getUsername().equals(userAccount.getUsername())) {
+			if (followers.get(i).getUsername().equals(account.getUsername())) {
 				indicator1 = 1;
 				followers.remove(i);
 			}
 		}
 		//Remove user from pending list if user regrets superfollowing an account while being pending 
 		for (int i=0; i< pending.size(); i++) {
-			if (pending.get(i).getUsername().equals(userAccount.getUsername())) {
+			if (pending.get(i).getUsername().equals(account.getUsername())) {
 				indicator1 = 2;
 				pending.remove(i);
 			}
 		}
 		//Add user to pending list
 		if (indicator1 == -1) {
-			pending.add(userAccount);
+			pending.add(account);
 		}
 		followedAccount.setSuperfollowers(followers);
 		followedAccount.setSuperFollowersPending(pending);
 		
 		Account updatedFollowedAccount = AccountDAOImplementation.getInstance().update(followedAccount);	  
-		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(userAccount);
+		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(account);
 		
 		if (updatedUserAccount!= null & updatedFollowedAccount!= null) {
 			jsonObject = Json.createObjectBuilder()

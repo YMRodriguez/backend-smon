@@ -27,8 +27,16 @@ private static final long serialVersionUID = 1L;
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		boolean loggedin = req.getSession().getAttribute("loggedin") != null
+                && (boolean) req.getSession().getAttribute("loggedin");
+        Account account = loggedin
+                ? (req.getSession().getAttribute("account") != null ? (Account) req.getSession().getAttribute("account")
+                        : null)
+                : null;
 		
-		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 	
+		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
+
 		StringBuilder buffer = new StringBuilder();
         BufferedReader reader = req.getReader();
         String line;
@@ -40,14 +48,14 @@ private static final long serialVersionUID = 1L;
         JsonObject jsonObject = jsonReader.readObject();
         
 		String username = jsonObject.getString("username");
-		String myusername = jsonObject.getString("myusername");
+		//String myusername = jsonObject.getString("myusername");
 		Account userAccount = AccountDAOImplementation.getInstance().read(username);
 		Boolean buttonvalue = false;
 		
 		List<Account> followers = userAccount.getFollowers();
 		
 		for (int i=0; i< followers.size(); i++) {
-			if (followers.get(i).getUsername().equals(myusername)) {
+			if (followers.get(i).getUsername().equals(account.getUsername())) {
 				buttonvalue = true;
 			}
 		}

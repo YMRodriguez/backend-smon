@@ -27,8 +27,16 @@ private static final long serialVersionUID = 1L;
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		boolean loggedin = req.getSession().getAttribute("loggedin") != null
+                && (boolean) req.getSession().getAttribute("loggedin");
+        Account account = loggedin
+                ? (req.getSession().getAttribute("account") != null ? (Account) req.getSession().getAttribute("account")
+                        : null)
+                : null;
 		
-		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 	
+		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
+
 		StringBuilder buffer = new StringBuilder();
         BufferedReader reader = req.getReader();
         String line;
@@ -43,17 +51,17 @@ private static final long serialVersionUID = 1L;
 		Account userAccount = AccountDAOImplementation.getInstance().read(username);
 		String buttonvalue = "Superfollow";
 		
-		if (jsonObject.getString("myusername") != null) {
-			String myusername = jsonObject.getString("myusername");
+		if (account.getUsername() != null) {
+			//String myusername = jsonObject.getString("myusername");
 			List<Account> followers = userAccount.getSuperFollowersPending();
 			for (int i=0; i< followers.size(); i++) {
-				if (followers.get(i).getUsername().equals(myusername)) {
+				if (followers.get(i).getUsername().equals(account.getUsername())) {
 					buttonvalue = "Pendiente";
 				}
 			}
 			List<Account> superfollowers = userAccount.getSuperfollowers();
 			for (int i=0; i< superfollowers.size(); i++) {
-				if (superfollowers.get(i).getUsername().equals(myusername)) {
+				if (superfollowers.get(i).getUsername().equals(account.getUsername())) {
 					buttonvalue = "Unsuperfollow";
 				}
 			}

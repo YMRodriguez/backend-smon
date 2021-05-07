@@ -31,8 +31,15 @@ public class ManageSuperfollowServlet extends HttpServlet{
 	
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		boolean loggedin = req.getSession().getAttribute("loggedin") != null
+                && (boolean) req.getSession().getAttribute("loggedin");
+        Account account = loggedin
+                ? (req.getSession().getAttribute("account") != null ? (Account) req.getSession().getAttribute("account")
+                        : null)
+                : null;
+		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
 
-		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 	
 		StringBuilder buffer = new StringBuilder();
         BufferedReader reader = req.getReader();
         String line;
@@ -43,44 +50,44 @@ public class ManageSuperfollowServlet extends HttpServlet{
         JsonReader jsonReader = Json.createReader(new StringReader(data));
         JsonObject jsonObject = jsonReader.readObject();
         
-		String myusername = jsonObject.getString("myusername");
+		//String myusername = jsonObject.getString("myusername");
 		String username = jsonObject.getString("username");
 		String button = jsonObject.getString("button");
-		Account userAccount = AccountDAOImplementation.getInstance().read(myusername);
+		//Account userAccount = AccountDAOImplementation.getInstance().read(myusername);
 		Account followerAccount = AccountDAOImplementation.getInstance().read(username);
 		
 			if (button.equals("Accept")) {
-				List<Account> pending = userAccount.getSuperFollowersPending();
+				List<Account> pending = account.getSuperFollowersPending();
 				for (int i=0; i< pending.size(); i++) {
 					if (pending.get(i).getUsername().equals(followerAccount.getUsername())) {
 						pending.remove(i);
 					}
 				}
-				userAccount.setSuperFollowersPending(pending);
+				account.setSuperFollowersPending(pending);
 				
-				List<Account> followers = userAccount.getSuperfollowers();
+				List<Account> followers = account.getSuperfollowers();
 				followers.add(followerAccount);
-				userAccount.setSuperfollowers(followers);
+				account.setSuperfollowers(followers);
 				
 			} else if (button.equals("Reject")) {
-				List<Account> pending = userAccount.getSuperFollowersPending();
+				List<Account> pending = account.getSuperFollowersPending();
 				for (int i=0; i< pending.size(); i++) {
 					if (pending.get(i).getUsername().equals(followerAccount.getUsername())) {
 						pending.remove(i);
 					}
 				}
-				userAccount.setSuperFollowersPending(pending);
+				account.setSuperFollowersPending(pending);
 			} else if (button.equals("Delete")) {
-				List<Account> superfollowers = userAccount.getSuperfollowers();
+				List<Account> superfollowers = account.getSuperfollowers();
 				for (int i=0; i< superfollowers.size(); i++) {
 					if (superfollowers.get(i).getUsername().equals(followerAccount.getUsername())) {
 						superfollowers.remove(i);
 					}
 				}
-				userAccount.setSuperfollowers(superfollowers);	
+				account.setSuperfollowers(superfollowers);	
 			}
 		
-		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(userAccount);		  
+		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(account);		  
 				
 		if (updatedUserAccount!= null) {
 			GsonBuilder gsonBuilder = new GsonBuilder();
