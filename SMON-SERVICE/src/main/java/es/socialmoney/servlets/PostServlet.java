@@ -35,6 +35,7 @@ public class PostServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		response.addHeader("Access-Control-Allow-Credentials", "true");
 
 		StringBuilder buffer = new StringBuilder();
 		BufferedReader reader = request.getReader();

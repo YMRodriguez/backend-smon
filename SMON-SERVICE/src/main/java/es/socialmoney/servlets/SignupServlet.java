@@ -37,6 +37,8 @@ public class SignupServlet extends HttpServlet {
 		JsonReader jsonReader = Json.createReader(new StringReader(data));
 		JsonObject jsonObject = jsonReader.readObject();
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
+
 		if (AccountDAOImplementation.getInstance().read(jsonObject.getString("username")) == null) {
 			Account a = new Account(jsonObject.getString("username"), jsonObject.getString("password"),
 					jsonObject.getString("name"), Integer.parseInt(jsonObject.getString("age")));

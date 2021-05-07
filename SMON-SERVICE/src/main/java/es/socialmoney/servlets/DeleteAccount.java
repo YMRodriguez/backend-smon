@@ -28,6 +28,7 @@ import java.security.KeyPair;
 import java.security.Security;
 import java.security.interfaces.RSAPrivateKey;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.StringReader;
@@ -50,8 +51,9 @@ public class DeleteAccount extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */    
     private KeyPair getKeyPairPEM() throws Exception {
-	        FileReader fileReader = new FileReader("/home/ramos/clave.pem");
-	        PEMParser pemParser = new PEMParser(fileReader);
+    		ClassLoader classLoader = getClass().getClassLoader();
+    		File file = new File(classLoader.getResource("clave.pem").getFile());
+    		FileReader fileReader = new FileReader(file);	        PEMParser pemParser = new PEMParser(fileReader);
 	        Object pemKeyPair = (Object) pemParser.readObject();
 	        PEMDecryptorProvider decProv = new JcePEMDecryptorProviderBuilder().build("PASSWORD".toCharArray());
 	        JcaPEMKeyConverter converter = new JcaPEMKeyConverter();
@@ -70,7 +72,13 @@ public class DeleteAccount extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-		
+		response.addHeader("Access-Control-Allow-Credentials", "true");
+		boolean loggedin = request.getSession().getAttribute("loggedin") != null &&
+                (boolean) request.getSession().getAttribute("loggedin");
+        Account account = loggedin ?
+                (request.getSession().getAttribute("account")!= null?
+                        (Account)request.getSession().getAttribute("account"):null)
+                :null;
 		StringBuilder buffer = new StringBuilder();
 		BufferedReader reader = request.getReader();
 		String line;
@@ -82,7 +90,7 @@ public class DeleteAccount extends HttpServlet {
 		JsonObject jsonObject = jsonReader.readObject();
 
 		System.out.println(jsonObject);
-        Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
+        //Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
         String plainText = null;
         String plainText2 = null;
         try {

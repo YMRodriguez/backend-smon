@@ -34,6 +34,12 @@ public class EditAccountServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		boolean loggedin = req.getSession().getAttribute("loggedin") != null &&
+                (boolean) req.getSession().getAttribute("loggedin");
+        Account account = loggedin ?
+                (req.getSession().getAttribute("account")!= null?
+                        (Account)req.getSession().getAttribute("account"):null)
+                :null;
 
 		JsonReader jsonReader = Json.createReader(new StringReader(getValue(req.getPart("data"))));
 		JsonObject jsonObject = jsonReader.readObject();
@@ -47,7 +53,7 @@ public class EditAccountServlet extends HttpServlet {
 
 		boolean profits = jsonObject.getBoolean("showprofits");
 		
-		Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
+		//Account account = AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
 		account.setShowprofits(profits);
 
 		if (password != null && password.length()!=0) {

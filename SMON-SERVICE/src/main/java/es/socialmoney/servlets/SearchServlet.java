@@ -29,7 +29,15 @@ public class SearchServlet extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		boolean loggedin = req.getSession().getAttribute("loggedin") != null
+                && (boolean) req.getSession().getAttribute("loggedin");
+        Account account = loggedin
+                ? (req.getSession().getAttribute("account") != null ? (Account) req.getSession().getAttribute("account")
+                        : null)
+                : null;
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
+
 		StringBuilder buffer = new StringBuilder();
 		BufferedReader reader = req.getReader();
 		String line;
@@ -41,17 +49,17 @@ public class SearchServlet extends HttpServlet {
 		JsonObject jsonObject = jsonReader.readObject();
 
 		String username = jsonObject.getString("username");
-		Account account = AccountDAOImplementation.getInstance().read(username);
+		Account accountSearch = AccountDAOImplementation.getInstance().read(username);
 
-		if (account != null) {
+		if (account != null & accountSearch != null) {
 			
 			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-			String json = gson.toJson(account);
+			String json = gson.toJson(accountSearch);
 			
 			GsonBuilder gsonBuilder = new GsonBuilder();
 			gsonBuilder.registerTypeAdapter(Account.class, new FollowsSerializer());
 			Gson gson2 = gsonBuilder.create();
-			String jsonuserfollows = gson2.toJson(account);
+			String jsonuserfollows = gson2.toJson(accountSearch);
 			
             jsonObject = Json.createObjectBuilder()
                         .add("code",200)
@@ -60,7 +68,7 @@ public class SearchServlet extends HttpServlet {
                         .build();
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
-			req.getSession().setAttribute("account", account);
+			req.getSession().setAttribute("account", accountSearch);
 			resp.getWriter().write(jsonObject.toString());
 		} else {
 			jsonObject = Json.createObjectBuilder().add("code", 404).build();
