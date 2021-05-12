@@ -42,7 +42,6 @@ public class SearchServlet extends HttpServlet {
 		JsonReader jsonReader = Json.createReader(new StringReader(data));
 		JsonObject jsonObject = jsonReader.readObject();
 
-		
 		// Get the account from the session if logged in.
 		boolean loggedin = req.getSession().getAttribute("loggedin") != null
 				&& (boolean) req.getSession().getAttribute("loggedin");
@@ -50,29 +49,26 @@ public class SearchServlet extends HttpServlet {
 				? (req.getSession().getAttribute("account") != null ? (Account) req.getSession().getAttribute("account")
 						: null)
 				: null;
-				
+
 		String username = jsonObject.getString("username");
-		Account accountSearching = AccountDAOImplementation.getInstance().read(username);
+		Account accountSearch = AccountDAOImplementation.getInstance().read(username);
 
+		if (account != null & accountSearch != null) {
 
-		if (accountSearching != null && account != null) {
-			
 			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-			String json = gson.toJson(accountSearching);
-			
+			String json = gson.toJson(accountSearch);
+
 			GsonBuilder gsonBuilder = new GsonBuilder();
 			gsonBuilder.registerTypeAdapter(Account.class, new FollowsSerializer());
 			Gson gson2 = gsonBuilder.create();
-			String jsonuserfollows = gson2.toJson(accountSearching);
-			
-            jsonObject = Json.createObjectBuilder()
-                        .add("code",200)
-                        .add("account",json)
-                        .add("visitFollows",jsonuserfollows)
-                        .build();
+
+			String jsonuserfollows = gson2.toJson(accountSearch);
+
+			jsonObject = Json.createObjectBuilder().add("code", 200).add("account", json)
+					.add("visitFollows", jsonuserfollows).build();
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
-			req.getSession().setAttribute("account", accountSearching);
+			req.getSession().setAttribute("account", accountSearch);
 			resp.getWriter().write(jsonObject.toString());
 		} else {
 			jsonObject = Json.createObjectBuilder().add("code", 404).build();
