@@ -34,6 +34,7 @@ public class FollowServlet extends HttpServlet{
 		int indicator1 = -1;
 		int indicator2 = -1;
 		
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
 		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000"); 	
 		StringBuilder buffer = new StringBuilder();
         BufferedReader reader = req.getReader();
@@ -45,13 +46,19 @@ public class FollowServlet extends HttpServlet{
         JsonReader jsonReader = Json.createReader(new StringReader(data));
         JsonObject jsonObject = jsonReader.readObject();
         
-		String username = jsonObject.getString("username");
+        
+		boolean loggedin = req.getSession().getAttribute("loggedin") != null
+				&& (boolean) req.getSession().getAttribute("loggedin");
+		Account account = loggedin
+				? (req.getSession().getAttribute("account") != null ? (Account) req.getSession().getAttribute("account")
+						: null)
+				: null;
+        
 		String followed = jsonObject.getString("followed");
-		Account userAccount = AccountDAOImplementation.getInstance().read(username);
 		Account followedAccount = AccountDAOImplementation.getInstance().read(followed);
 		
 		//Update the following list of the main user
-		List<Account> following = userAccount.getFollowing();
+		List<Account> following = account.getFollowing();
 		for (int i=0; i< following.size(); i++) {
 			if (following.get(i).getUsername().equals(followedAccount.getUsername())) {
 				indicator1 = 1;
@@ -61,21 +68,21 @@ public class FollowServlet extends HttpServlet{
 		if (indicator1 == -1) {
 			following.add(followedAccount);
 		}
-		userAccount.setFollowing(following);
+		account.setFollowing(following);
 		
-		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(userAccount);
+		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(account);
 		
 		//Update the followers list of the other user. No hace falta porque se inserta en la relación N-M con lo anterior.
 		
 		  List<Account> followers = followedAccount.getFollowers(); 
 		  for (int i=0; i<followers.size(); i++) { 
-			  if (followers.get(i).getUsername().equals(userAccount.getUsername())) {
+			  if (followers.get(i).getUsername().equals(account.getUsername())) {
 				  indicator2 = 1;
 				  followers.remove(i); 
 			  } 
 		  } 
 		  if (indicator2 == -1) {
-			  followers.add(userAccount); 
+			  followers.add(account); 
 		  } 
 		  
 		  followedAccount.setFollowers(followers);

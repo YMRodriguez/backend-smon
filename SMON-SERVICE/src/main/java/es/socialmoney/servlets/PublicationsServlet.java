@@ -46,6 +46,7 @@ public class PublicationsServlet extends HttpServlet {
 		resp.setCharacterEncoding("UTF-8");
 		resp.addHeader("Access-Control-Allow-Credentials", "true");
 
+
 		if (account != null) {
 			List<Post> postList = PostDAOImplementation.getInstance().readAll(account.getUsername());
 			if (postList != null) {

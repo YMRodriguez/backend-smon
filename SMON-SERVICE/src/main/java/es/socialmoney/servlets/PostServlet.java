@@ -34,6 +34,9 @@ public class PostServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+        //response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+        //response.addHeader("Access-Control-Allow-Credentials", "true");
+
 		response.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
 
 		StringBuilder buffer = new StringBuilder();
@@ -52,9 +55,8 @@ public class PostServlet extends HttpServlet {
 		t.setContent(jsonObject.getString("content"));
 		t.setDate(LocalDate.now());
 		t.setIsexclusive(jsonObject.getBoolean("comm"));
-		t.setIsfundan(jsonObject.getBoolean("comm"));
+		t.setIsfundan(jsonObject.getBoolean("afun"));
 		t.setIsopinion(jsonObject.getBoolean("opinion"));
-		;
 		t.setIstecan(jsonObject.getBoolean("atec"));
 
 		Post posted = PostDAOImplementation.getInstance().create(t);
