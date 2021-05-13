@@ -68,7 +68,7 @@ public class SearchServlet extends HttpServlet {
                         .build();
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
-			req.getSession().setAttribute("account", accountSearch);
+			req.getSession().setAttribute("account", account);
 			resp.getWriter().write(jsonObject.toString());
 		} else {
 			jsonObject = Json.createObjectBuilder().add("code", 404).build();
