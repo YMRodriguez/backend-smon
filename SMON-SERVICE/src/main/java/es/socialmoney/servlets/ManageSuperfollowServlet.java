@@ -58,10 +58,6 @@ public class ManageSuperfollowServlet extends HttpServlet{
 		
 			if (button.equals("Accept")) {
 				List<Account> pending = account.getSuperFollowersPending();
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 				for (int i=0; i< pending.size(); i++) {
 					if (pending.get(i).getUsername().equals(followerAccount.getUsername())) {
 						pending.remove(i);
