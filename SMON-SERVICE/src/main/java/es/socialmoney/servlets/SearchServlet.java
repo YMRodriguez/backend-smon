@@ -42,18 +42,11 @@ public class SearchServlet extends HttpServlet {
 		JsonReader jsonReader = Json.createReader(new StringReader(data));
 		JsonObject jsonObject = jsonReader.readObject();
 
-		// Get the account from the session if logged in.
-		boolean loggedin = req.getSession().getAttribute("loggedin") != null
-				&& (boolean) req.getSession().getAttribute("loggedin");
-		Account account = loggedin
-				? (req.getSession().getAttribute("account") != null ? (Account) req.getSession().getAttribute("account")
-						: null)
-				: null;
-
 		String username = jsonObject.getString("username");
 		Account accountSearch = AccountDAOImplementation.getInstance().read(username);
 
 		if (account != null & accountSearch != null) {
+<<<<<<< Updated upstream
 
 			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 			String json = gson.toJson(accountSearch);
@@ -66,6 +59,22 @@ public class SearchServlet extends HttpServlet {
 
 			jsonObject = Json.createObjectBuilder().add("code", 200).add("account", json)
 					.add("visitFollows", jsonuserfollows).build();
+=======
+			
+			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+			String json = gson.toJson(accountSearch);
+			
+			GsonBuilder gsonBuilder = new GsonBuilder();
+			gsonBuilder.registerTypeAdapter(Account.class, new FollowsSerializer());
+			Gson gson2 = gsonBuilder.create();
+			String jsonuserfollows = gson2.toJson(accountSearch);
+			
+            jsonObject = Json.createObjectBuilder()
+                        .add("code",200)
+                        .add("account",json)
+                        .add("visitFollows",jsonuserfollows)
+                        .build();
+>>>>>>> Stashed changes
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
 			req.getSession().setAttribute("account", accountSearch);

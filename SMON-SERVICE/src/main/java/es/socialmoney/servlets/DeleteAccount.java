@@ -57,8 +57,13 @@ public class DeleteAccount extends HttpServlet {
 		return keyPair;
 	}
 
+<<<<<<< Updated upstream
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+=======
+	
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+>>>>>>> Stashed changes
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
@@ -77,6 +82,10 @@ public class DeleteAccount extends HttpServlet {
 		Account account = loggedin ? (request.getSession().getAttribute("account") != null
 				? (Account) request.getSession().getAttribute("account")
 				: null) : null;
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 		StringBuilder buffer = new StringBuilder();
 		BufferedReader reader = request.getReader();
 		String line;
@@ -125,6 +134,10 @@ public class DeleteAccount extends HttpServlet {
 			System.out.println(plainText);
 			System.out.println(plainText2);
 			Account accounted = AccountDAOImplementation.getInstance().delete(account);
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 			if (accounted != null) {
 
