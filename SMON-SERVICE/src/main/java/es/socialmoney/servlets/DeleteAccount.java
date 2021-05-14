@@ -88,7 +88,6 @@ public class DeleteAccount extends HttpServlet {
 		JsonReader jsonReader = Json.createReader(new StringReader(data));
 		JsonObject jsonObject = jsonReader.readObject();
 
-		System.out.println(jsonObject);
 		// Account account =
 		// AccountDAOImplementation.getInstance().read(jsonObject.getString("username"));
 		String plainText = null;
@@ -102,7 +101,6 @@ public class DeleteAccount extends HttpServlet {
 			cipher.init(Cipher.DECRYPT_MODE, privKey);
 			byte[] plain = cipher.doFinal(cipherText);
 			plainText = new String(Base64.decodeBase64(plain));
-			System.out.println(plainText);
 		} catch (Exception ex) {
 			System.out.println(ex);
 		}
@@ -116,7 +114,6 @@ public class DeleteAccount extends HttpServlet {
 				cipher.init(Cipher.DECRYPT_MODE, privKey);
 				byte[] plain = cipher.doFinal(cipherText);
 				plainText2 = new String(Base64.decodeBase64(plain));
-				System.out.println(plainText2);
 			} catch (Exception ex) {
 				System.out.println(ex);
 			}

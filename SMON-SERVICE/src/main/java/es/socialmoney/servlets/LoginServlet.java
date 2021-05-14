@@ -76,7 +76,6 @@ public class LoginServlet extends HttpServlet {
             cipher.init(Cipher.DECRYPT_MODE, privKey);
             byte[] plain = cipher.doFinal(cipherText);
             plainText = new String(Base64.decodeBase64(plain));
-            System.out.println(plainText);
          } catch (Exception ex) {System.out.println(ex);}
         if(account!=null) {
         try {

@@ -55,7 +55,6 @@ public class PublicationsServlet extends HttpServlet {
 				gsonBuilder.registerTypeAdapter(Account.class, new AccountSerializer());
 				Gson gson = gsonBuilder.create();
 				String jsonList = gson.toJson(postList);
-				System.out.println(jsonList);
 
 				JsonObject jsonObject = Json.createObjectBuilder().add("code", 200).add("postList", jsonList).build();
 				req.getSession().setAttribute("postList", postList);
@@ -112,7 +111,6 @@ public class PublicationsServlet extends HttpServlet {
 				gsonBuilder.registerTypeAdapter(Account.class, new AccountSerializer());
 				Gson gson = gsonBuilder.create();
 				String jsonList = gson.toJson(postList);
-				System.out.println(jsonList);
 
 				JsonObject jsonObject2 = Json.createObjectBuilder().add("code", 200).add("postList", jsonList).build();
 				req.getSession().setAttribute("postList", postList);

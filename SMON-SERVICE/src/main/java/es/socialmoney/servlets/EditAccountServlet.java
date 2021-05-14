@@ -46,9 +46,7 @@ public class EditAccountServlet extends HttpServlet {
 
 		InputStream filecontent = req.getPart("picture").getInputStream();
 		byte[] fileAsByteArray = IOUtils.toByteArray(filecontent);
-		System.out.println(jsonObject);
 		String description = jsonObject.getString("description")!= null? (String)jsonObject.getString("description"):null;
-		System.out.println(description);
 		String password = jsonObject.getString("password")!= null? (String)jsonObject.getString("password"):null;
 
 		boolean profits = jsonObject.getBoolean("showprofits");

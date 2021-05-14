@@ -64,7 +64,6 @@ public class DeletePost extends HttpServlet {
 		JsonReader jsonReader = Json.createReader(new StringReader(data));
 		JsonObject jsonObject = jsonReader.readObject();
 
-		System.out.println(jsonObject);
 		Post p = PostDAOImplementation.getInstance().read(jsonObject.getInt("id"));
 
 		Post posted = PostDAOImplementation.getInstance().delete(p);

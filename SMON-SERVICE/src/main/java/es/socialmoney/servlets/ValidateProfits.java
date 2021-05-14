@@ -53,7 +53,6 @@ public class ValidateProfits extends HttpServlet {
 		resp.setContentType("application/json");
 		resp.setCharacterEncoding("UTF-8");
 		resp.addHeader("Access-Control-Allow-Credentials", "true");
-		System.out.println(resp.toString());
 		StringBuilder buffer = new StringBuilder();
 		BufferedReader reader = req.getReader();
 		String line;

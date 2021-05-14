@@ -52,6 +52,8 @@ public class FeedServlet extends HttpServlet {
     	// Get the account from the session if logged in.
 		boolean loggedin = req.getSession().getAttribute("loggedin") != null
 				&& (boolean) req.getSession().getAttribute("loggedin");
+		
+		if (loggedin) {
 		Account user = loggedin
 				? (req.getSession().getAttribute("account") != null ? (Account) req.getSession().getAttribute("account")
 						: null)
@@ -90,7 +92,7 @@ public class FeedServlet extends HttpServlet {
 			gsonBuilder.registerTypeAdapter(Account.class, new AccountSerializer());
 			Gson gson = gsonBuilder.create();
 			String jsonList = gson.toJson(postList);
-			System.out.println(jsonList);
+
 
 			jsonObject = Json.createObjectBuilder().add("code", 200).add("postList", jsonList).build();
 			resp.setContentType("application/json");
@@ -105,5 +107,12 @@ public class FeedServlet extends HttpServlet {
 			resp.getWriter().write(jsonObject.toString());
 		}
 
+	}
+	 else {
+			jsonObject = Json.createObjectBuilder().add("code", 204).build();
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+			resp.getWriter().write(jsonObject.toString());
+	 }	
 	}
 }
