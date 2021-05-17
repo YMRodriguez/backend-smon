@@ -219,13 +219,7 @@ public class Account implements Serializable {
 		this.accountType = accountType;
 	}
 
-	@Override
-	public String toString() {
-		return "Account [username=" + username + ", password=" + password + ", name=" + name + ", age=" + age
-				+ ", isadmin=" + isadmin + ", description=" + description + ", link=" + link + ", timeframe="
-				+ timeframe + ", profit=" + profit + ", accountType=" + accountType + ", showprofits=" + showprofits
-				+ ", picture=" + Arrays.toString(picture);
-	}
+	
 
 	@Override
 	public int hashCode() {

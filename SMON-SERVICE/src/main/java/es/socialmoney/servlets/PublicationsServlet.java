@@ -3,6 +3,7 @@ package es.socialmoney.servlets;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.json.Json;
@@ -48,7 +49,7 @@ public class PublicationsServlet extends HttpServlet {
 		resp.addHeader("Access-Control-Allow-Credentials", "true");
 
 
-		if (account != null) {
+		if (account != null ) {
 			List<Post> postList = PostDAOImplementation.getInstance().readAll(account.getUsername());
 			if (postList != null) {
 				GsonBuilder gsonBuilder = new GsonBuilder();
@@ -102,18 +103,31 @@ public class PublicationsServlet extends HttpServlet {
 
 
 		String visitUser = jsonObject.getString("username");
+		Account visited = AccountDAOImplementation.getInstance().read(visitUser);
+		List<Account> superfollowing = account.getSuperfollowing();
 		
 		
 		if (account != null) {
 			List<Post> postList = PostDAOImplementation.getInstance().readAll(visitUser);
-			if (postList != null) {
+			List<Post> postNew = new ArrayList<Post>();
+			for(Post p : postList) {
+				if(p.isIsexclusive()) {
+					if(superfollowing.contains(visited)) {
+						postNew.add(p);
+					}
+				}else {
+					postNew.add(p);
+				}
+				
+			}
+			if (postNew != null) {
 				GsonBuilder gsonBuilder = new GsonBuilder();
 				gsonBuilder.registerTypeAdapter(Account.class, new AccountSerializer());
 				Gson gson = gsonBuilder.create();
-				String jsonList = gson.toJson(postList);
+				String jsonList = gson.toJson(postNew);
 
 				JsonObject jsonObject2 = Json.createObjectBuilder().add("code", 200).add("postList", jsonList).build();
-				req.getSession().setAttribute("postList", postList);
+				req.getSession().setAttribute("postList", postNew);
 				resp.getWriter().write(jsonObject2.toString());
 			} else {
 				JsonObject jsonObject2 = Json.createObjectBuilder().add("code", 204).build();
