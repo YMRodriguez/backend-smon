@@ -31,7 +31,6 @@ public class FollowServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		int indicator1 = -1;
-		int indicator2 = -1;
 		
 		boolean loggedin = req.getSession().getAttribute("loggedin") != null
                 && (boolean) req.getSession().getAttribute("loggedin");
@@ -52,13 +51,12 @@ public class FollowServlet extends HttpServlet {
         JsonReader jsonReader = Json.createReader(new StringReader(data));
         JsonObject jsonObject = jsonReader.readObject();
         
-		//String username = jsonObject.getString("username");
 		String followed = jsonObject.getString("followed");
-		//Account userAccount = AccountDAOImplementation.getInstance().read(username);
 		Account followedAccount = AccountDAOImplementation.getInstance().read(followed);
-		
+		System.out.println("Hola");
 		//Update the following list of the main user
 		List<Account> following = account.getFollowing();
+		System.out.println(following.toString());
 		for (int i=0; i< following.size(); i++) {
 			if (following.get(i).getUsername().equals(followedAccount.getUsername())) {
 				indicator1 = 1;
@@ -68,6 +66,7 @@ public class FollowServlet extends HttpServlet {
 		if (indicator1 == -1) {
 			following.add(followedAccount);
 		}
+		System.out.println(following);
 		account.setFollowing(following);
 
 		Account updatedUserAccount = AccountDAOImplementation.getInstance().update(account);		  

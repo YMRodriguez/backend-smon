@@ -65,6 +65,7 @@ private static final long serialVersionUID = 1L;
 		gsonBuilder.registerTypeAdapter(Account.class, new FollowsSerializer());
 		Gson gson = gsonBuilder.create();
 		String jsonuserfollows = gson.toJson(userAccount);
+		System.out.println(jsonuserfollows);
 		jsonObject = Json.createObjectBuilder()
 	               .add("code",200)
 	               .add("userfollows", jsonuserfollows)

@@ -13,7 +13,7 @@ public class AccountSerializer implements JsonSerializer<Account> {
 	@Override
 	public JsonElement serialize(Account author, Type typeOfSrc, JsonSerializationContext context ) {
 		JsonObject jsonObject = new JsonObject();
-        jsonObject.addProperty("name", author.getName());
+        jsonObject.addProperty("name", author.getUsername());
         return jsonObject;	
 	}
 }

@@ -26,7 +26,7 @@ public class FollowsSerializer implements JsonSerializer<Account> {
 		for (int i = 0; i < followers.size(); i++) {
 			userfollowers.add(followers.get(i).getUsername());
 		}
-
+		System.out.println(userfollowers.toString());
 		jsonObject.addProperty("userFollows", userfollowing.toString());
 		jsonObject.addProperty("userFollowers", userfollowers.toString());
 		return jsonObject;

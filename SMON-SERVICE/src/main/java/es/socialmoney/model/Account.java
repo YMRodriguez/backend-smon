@@ -60,10 +60,6 @@ public class Account implements Serializable {
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "superfollows_pending")
 	private List<Account> superfollowerspending; 
-	
-//	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-//	@JoinTable(name = "superfollows")
-//	private List<Account> superfollowerspending; 
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinTable(name = "superfollows", joinColumns = @JoinColumn(name = "superfollower"), inverseJoinColumns = @JoinColumn(name = "superfollowed"))
@@ -228,9 +224,7 @@ public class Account implements Serializable {
 		return "Account [username=" + username + ", password=" + password + ", name=" + name + ", age=" + age
 				+ ", isadmin=" + isadmin + ", description=" + description + ", link=" + link + ", timeframe="
 				+ timeframe + ", profit=" + profit + ", accountType=" + accountType + ", showprofits=" + showprofits
-				+ ", picture=" + Arrays.toString(picture) + ", posts=" + posts + ", following=" + following
-				+ ", followers=" + followers + ", superfollowing=" + superfollowing + ", superfollowers="
-				+ superfollowers + "]";
+				+ ", picture=" + Arrays.toString(picture);
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package es.socialmoney.servlets;
-import java.util.Collections;
 
+import java.util.Collections;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,8 +36,8 @@ public class FeedServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
-        resp.addHeader("Access-Control-Allow-Credentials", "true");
+		resp.addHeader("Access-Control-Allow-Origin", "http://localhost:3000");
+		resp.addHeader("Access-Control-Allow-Credentials", "true");
 		StringBuilder buffer = new StringBuilder();
 		BufferedReader reader = req.getReader();
 		String line;
@@ -47,58 +47,68 @@ public class FeedServlet extends HttpServlet {
 		String data = buffer.toString();
 		JsonReader jsonReader = Json.createReader(new StringReader(data));
 		JsonObject jsonObject = jsonReader.readObject();
-		
-		
-    	// Get the account from the session if logged in.
+
+		// Get the account from the session if logged in.
 		boolean loggedin = req.getSession().getAttribute("loggedin") != null
 				&& (boolean) req.getSession().getAttribute("loggedin");
-		
+
 		if (loggedin) {
-		Account user = loggedin
-				? (req.getSession().getAttribute("account") != null ? (Account) req.getSession().getAttribute("account")
-						: null)
-				: null;
-		
-		List<Account> following = user.getFollowing();
-		
-		List<Post> postListNoOrder = new ArrayList<>();
-		
-		for (Account a : following) {
-			String userName = a.getUsername();
-			List<Post> postUser = PostDAOImplementation.getInstance().readAll(userName); 
-			for (Post p : postUser) {
-				postListNoOrder.add(p);
+			Account user = loggedin ? (req.getSession().getAttribute("account") != null
+					? (Account) req.getSession().getAttribute("account")
+					: null) : null;
+
+			List<Account> following = user.getFollowing();
+
+			List<Post> postListNoOrder = new ArrayList<>();
+			List<Account> superfollowing = user.getSuperfollowing();
+
+			for (Account a : following) {
+				String userName = a.getUsername();
+				List<Post> postUser = PostDAOImplementation.getInstance().readAll(userName);
+				for (Post p : postUser) {
+					if (p.isIsexclusive()) {
+						System.out.println("hola");
+						if(superfollowing.contains(a)) {
+							postListNoOrder.add(p);
+						}
+					}else {
+						postListNoOrder.add(p);
+					}
+				}
 			}
-		}
-		
-		List<Integer> ids =new ArrayList<Integer>();
-		
-		for (Post p : postListNoOrder) {
-			ids.add(p.getId());
-		}
-		
-		Collections.sort(ids);
-		Collections.reverse(ids);
 
-		List<Post> postList = new ArrayList<>();
-		
-		for (Integer i : ids) {
-			postList.add(PostDAOImplementation.getInstance().read(i));
-		}
+			List<Integer> ids = new ArrayList<Integer>();
 
+			for (Post p : postListNoOrder) {
+				ids.add(p.getId());
+			}
 
-		if (postList != null) { //si hay posts -> lo envio
-			GsonBuilder gsonBuilder = new GsonBuilder();
-			gsonBuilder.registerTypeAdapter(Account.class, new AccountSerializer());
-			Gson gson = gsonBuilder.create();
-			String jsonList = gson.toJson(postList);
+			Collections.sort(ids);
+			Collections.reverse(ids);
 
+			List<Post> postList = new ArrayList<>();
 
-			jsonObject = Json.createObjectBuilder().add("code", 200).add("postList", jsonList).build();
+			for (Integer i : ids) {
+				postList.add(PostDAOImplementation.getInstance().read(i));
+			}
+
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
-			resp.getWriter().write(jsonObject.toString());
-			req.getSession().setAttribute("postList", postList);
+			if (postList != null) { // si hay posts -> lo envio
+				GsonBuilder gsonBuilder = new GsonBuilder();
+				gsonBuilder.registerTypeAdapter(Account.class, new AccountSerializer());
+				Gson gson = gsonBuilder.create();
+				String jsonList = gson.toJson(postList);
+				System.out.println(jsonList);
+				jsonObject = Json.createObjectBuilder().add("code", 200).add("postList", jsonList).build();
+
+				resp.getWriter().write(jsonObject.toString());
+				req.getSession().setAttribute("postList", postList);
+
+			} else {
+				jsonObject = Json.createObjectBuilder().add("code", 204).build();
+				resp.getWriter().write(jsonObject.toString());
+			}
 
 		} else {
 			jsonObject = Json.createObjectBuilder().add("code", 204).build();
@@ -106,13 +116,5 @@ public class FeedServlet extends HttpServlet {
 			resp.setCharacterEncoding("UTF-8");
 			resp.getWriter().write(jsonObject.toString());
 		}
-
-	}
-	 else {
-			jsonObject = Json.createObjectBuilder().add("code", 204).build();
-			resp.setContentType("application/json");
-			resp.setCharacterEncoding("UTF-8");
-			resp.getWriter().write(jsonObject.toString());
-	 }	
 	}
 }
